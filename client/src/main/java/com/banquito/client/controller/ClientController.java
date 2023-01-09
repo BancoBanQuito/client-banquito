@@ -42,10 +42,6 @@ public class ClientController {
         return ResponseEntity.status(200).body("Client web created");
     }
 
-    /**************
-     * REFERENCE
-    ***************/
-
     @RequestMapping(value = "/reference", method = RequestMethod.POST)
     public Object createReference() {
         return ResponseEntity.status(200).body("Reference created");
@@ -60,10 +56,6 @@ public class ClientController {
     public Object updateReference() {
         return ResponseEntity.status(200).body("Reference update or Reference Logically DELETED");
     }
-
-    /**************
-     * ADDRESS
-    ***************/
 
     @RequestMapping(value = "/address", method = RequestMethod.POST)
     public Object createAddress() {
@@ -80,10 +72,6 @@ public class ClientController {
         return ResponseEntity.status(200).body("Address update");
     }
 
-    /**************
-     * PHONE
-    ***************/
-    
     @RequestMapping(value = "/phone", method = RequestMethod.PUT)
     public Object updatePhone() {
         return ResponseEntity.status(200).body("Address update");
