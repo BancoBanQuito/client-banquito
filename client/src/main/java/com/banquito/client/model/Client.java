@@ -1,6 +1,9 @@
 package com.banquito.client.model;
 
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -10,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Document(collection = "clients")
+@Document(collection = "client")
 public class Client {
 
     @Id
@@ -37,8 +40,8 @@ public class Client {
     @Field(value = "email")
     private String email;
 
-    @Field(value = "birthDate")
-    private String birthDate;
+    @Field(value = "birth_date")
+    private Date birthDate;
 
     @Field(value = "gender")
     private String gender;
@@ -47,42 +50,62 @@ public class Client {
     private String companyType;
 
     @Field(value = "app_legal_represent")
-    private String app_legal_represent;
+    private String appLegalRepresent;
 
     @Field(value = "articles_associated_doc")
-    private String articles_associated_doc;
+    private String articlesAssociatedDoc;
 
     @Field(value = "basic_services_document")
-    private String gender;
+    private String basicServicesDocument;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "career")
+    private String career;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "company_name")
+    private String companyName;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "create_date_company")
+    private Timestamp createDateCompany;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "finger_print")
+    private String fingerPrint;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "income_tax_document")
+    private String incomeTaxDocument;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "last_status_date")
+    private Timestamp lastStatusDate;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "marital_status")
+    private String maritalStatus;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "monthly_avg_income")
+    private String monthlyAvgIncome;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "nationality")
+    private String nationality;
 
-    @Field(value = "gender")
-    private String gender;
+    @Field(value = "signature")
+    private String signature;
 
+    @Field(value = "tax_payment_place")
+    private String taxPaymentPlace;
+
+    @Field(value = "tin_document")
+    private String tinDocument;
+
+    @Field(value = "work_status")
+    private String workStatus;
+
+    @Field(value = "client_relationship")
+    private ClientRelationship clientRelationship;
+
+    @Field(value = "client_reference")
+    private ClientReference clientReference;
+
+    @Field(value = "client_phone")
+    private ClientPhone clientPhone;
+
+    @Field(value = "client_address")
+    private ClientAddress clientAddress;
 }
