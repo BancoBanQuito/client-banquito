@@ -108,4 +108,7 @@ public class Client {
 
     @Field(value = "client_address")
     private ClientAddress clientAddress;
+    
+    @Field(value = "segment")
+    private String segment;
 }
