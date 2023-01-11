@@ -1,8 +1,9 @@
 package com.banquito.client.model;
 
 
-import java.sql.Date;
+
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -57,6 +58,7 @@ public class Client {
     private String segment;
     private String nameSegment;
     private String statusSegment;
+    private Date creationDate;
 
     private List<ClientRelationship> relationship;
     private List<ClientReference> reference;

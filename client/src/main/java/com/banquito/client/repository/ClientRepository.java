@@ -14,4 +14,5 @@ public interface ClientRepository extends CrudRepository<Client, String>{
     List<Client> findByLastnameLikeOrderByNames(String lastname);
     List<Client> findByStatusOrderByNames(String status);
     List<Client> findBySegmentOrderByNames(String segment);
+    //preguntar si se hace un finby por los ingresos
 }
