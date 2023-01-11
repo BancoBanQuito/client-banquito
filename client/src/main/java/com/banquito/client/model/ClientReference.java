@@ -1,14 +1,13 @@
 package com.banquito.client.model;
 
 import org.springframework.data.mongodb.core.mapping.Field;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@NoArgsConstructor
 public class ClientReference {
-    @Field(value = "name_reference")
+    
     private String nameReference;
-
-    @Field(value = "phone_reference")
     private String phoneReference;
-
-    @Field(value = "related_reference")
     private String relatedReference;
 }
