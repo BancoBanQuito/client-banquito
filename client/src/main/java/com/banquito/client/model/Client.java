@@ -66,5 +66,5 @@ public class Client {
     private List<ClientAddress> address;
 
     @Version
-    private Numeric version;
+    private Number version;
 }
