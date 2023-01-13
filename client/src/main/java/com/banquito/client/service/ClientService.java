@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.banquito.client.model.Client;
+import com.banquito.client.model.ClientAddress;
 import com.banquito.client.model.ClientPhone;
 import com.banquito.client.repository.ClientRepository;
 
@@ -90,15 +91,6 @@ public class ClientService {
     }
 
     public void updateReference() {
-    }
-
-    public void createAddress() {
-    }
-
-    public void getAddress() {
-    }
-
-    public void updateAddress() {
     }
 
     // Phone section

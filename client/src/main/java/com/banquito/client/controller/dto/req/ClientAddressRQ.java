@@ -1,4 +1,4 @@
-package com.banquito.client.controller.dto;
+package com.banquito.client.controller.dto.req;
 
 import java.io.Serializable;
 
@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientAddressRS implements Serializable{
-    
+public class ClientAddressRQ implements Serializable {
+
     private String codeLocation;
     private String addressLineOne;
     private String addressLineTwo;

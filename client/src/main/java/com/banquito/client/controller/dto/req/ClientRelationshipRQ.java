@@ -1,4 +1,4 @@
-package com.banquito.client.controller.dto;
+package com.banquito.client.controller.dto.req;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientRelationshipRQ implements Serializable{
+public class ClientRelationshipRQ implements Serializable {
     private String name;
     private Date startDate;
     private Date endDate;

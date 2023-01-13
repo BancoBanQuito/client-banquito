@@ -1,4 +1,4 @@
-package com.banquito.client.controller.dto;
+package com.banquito.client.controller.dto.req;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -41,7 +41,7 @@ public class ClientRQ implements Serializable {
     private String statusSegment;
     private Date creationDate;
 
-    //Preguntar RQ para objeto
+    // Preguntar RQ para objeto
     private List<ClientAddressRQ> clientAddressRQ;
     private List<ClientPhoneRQ> clientPhoneRQ;
     private List<ClientReferenceRQ> clientReferenceRQ;
