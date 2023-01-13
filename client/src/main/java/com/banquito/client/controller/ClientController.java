@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.client.service.ClientService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/client")
 public class ClientController {
