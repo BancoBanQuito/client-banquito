@@ -1,4 +1,4 @@
-package com.banquito.client.controller.dto;
+package com.banquito.client.controller.dto.res;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -10,9 +10,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientRS implements Serializable{
+public class ClientRS implements Serializable {
 
-    //PREGUNTAR POR ESTO
+    // PREGUNTAR POR ESTO
     private static final long serialVersionUID = 1L;
 
     private String lastname;

@@ -1,4 +1,4 @@
-package com.banquito.client.controller.dto;
+package com.banquito.client.controller.dto.res;
 
 import java.io.Serializable;
 
@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientReferenceRS implements Serializable{
-    
+public class ClientReferenceRS implements Serializable {
+
     private String nameReference;
     private String phoneReference;
     private String relatedReference;

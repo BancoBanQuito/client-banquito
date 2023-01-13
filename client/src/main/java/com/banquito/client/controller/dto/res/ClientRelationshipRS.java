@@ -1,4 +1,4 @@
-package com.banquito.client.controller.dto;
+package com.banquito.client.controller.dto.res;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientRelationshipRS implements Serializable{
-    
+public class ClientRelationshipRS implements Serializable {
+
     private String name;
     private Date startDate;
     private Date endDate;
