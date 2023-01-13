@@ -12,9 +12,9 @@ import lombok.Data;
 @Builder
 public class ClientRS implements Serializable{
 
-    //PREGUNTAR POR ESTO
-    private static final long serialVersionUID = 1L;
-
+    private String id;
+    private String identificationType;
+    private String identification;
     private String lastname;
     private String firstname;
     private String fullname;
@@ -45,9 +45,9 @@ public class ClientRS implements Serializable{
     private Date creationDate;
 
     // PREGUNTAR POR ESTO
-    List<ClientRelationshipRS> clientRelationships;
-    List<ClientAddressRS> clientAddresses;
-    List<ClientPhoneRS> clientPhones;
-    List<ClientReferenceRS> clientReferences;
+    List<ClientRelationshipRS> clientRelationshipsRS;
+    List<ClientAddressRS> clientAddressesRS;
+    List<ClientPhoneRS> clientPhonesRS;
+    List<ClientReferenceRS> clientReferencesRS;
 
 }
