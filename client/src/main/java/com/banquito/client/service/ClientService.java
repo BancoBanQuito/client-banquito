@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import com.banquito.client.model.Client;
 import com.banquito.client.repository.ClientRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ClientService {
 
