@@ -3,13 +3,16 @@ package com.banquito.client.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.client.controller.dto.ClientRS;
+import com.banquito.client.controller.dto.UserRQ;
 import com.banquito.client.controller.mapper.ClientMapper;
 import com.banquito.client.model.Client;
+import com.banquito.client.model.User;
 import com.banquito.client.service.ClientService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -52,8 +55,21 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/singup", method = RequestMethod.POST)
-    public Object singUp() {
-        return ResponseEntity.status(200).body("Client web created");
+    public ResponseEntity<String> singUp(@RequestBody UserRQ newUser) {
+        try {
+            String typeIdentification = newUser.getTypeIdentification();
+            String identification = newUser.getIdentification();
+            String email = newUser.getEmail();
+            User user = newUser.getUser();  
+            boolean success = clientService.singUp(typeIdentification, identification, email, user);
+            if (success) {
+                return ResponseEntity.ok("User added successfully");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

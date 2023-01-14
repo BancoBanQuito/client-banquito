@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.banquito.client.model.Client;
+import com.banquito.client.model.User;
 import com.banquito.client.repository.ClientRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +85,22 @@ public class ClientService {
     public void login(){
     }
 
-    public void singUp(){
+    public boolean singUp(String typeIdentification, String identification,String email, User newUser){
+        Client client = getTypeIdentificationAndIdentification(typeIdentification, identification);
+        if(client!=null && client.getEmail().equals(email)){
+            Optional<User> resultClient = client.getUser().stream()
+                                    .filter(user -> user.getType().equals("cli"))
+                                    .findFirst();
+            
+            if(!resultClient.isPresent()){
+                boolean success = client.getUser().add(newUser);
+                return success;
+            }
+            else{
+                throw new RuntimeException("The user already exists");
+            }
+        }
+        return false;
     }
 
     public void createReference() {
