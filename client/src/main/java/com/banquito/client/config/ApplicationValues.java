@@ -12,20 +12,17 @@ public class ApplicationValues {
     private final String mongoDB;
     private final String mongoUsr;
     private final String mongoPwd;
-    private final String mongoAut;
 
 
     @Autowired
     public ApplicationValues(@Value("${banquito.mongo.host}") String mongoHost,
             @Value("${banquito.mongo.db}") String mongoDB,
             @Value("${banquito.mongo.usr}") String mongoUsr,
-            @Value("${banquito.mongo.pwd}") String mongoPwd, 
-            @Value("${banquito.mongo.aut}") String mongoAut 
+            @Value("${banquito.mongo.pwd}") String mongoPwd 
     ) {
         this.mongoHost = mongoHost;
         this.mongoDB = mongoDB;
         this.mongoUsr = mongoUsr;
         this.mongoPwd = mongoPwd;
-        this.mongoAut = mongoAut;
     }
 }

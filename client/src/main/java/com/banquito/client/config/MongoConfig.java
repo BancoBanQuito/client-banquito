@@ -31,7 +31,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Override
     public MongoClient mongoClient() {
         return MongoClients.create("mongodb+srv://" + appValues.getMongoUsr() + ":" + appValues.getMongoPwd() + "@" 
-                    + appValues.getMongoHost() + "/" + appValues.getMongoDB() + "?retryWrites=true&w=majority");
+                    + appValues.getMongoHost() + "/" + "?retryWrites=true&w=majority");
     }
 
     @Override
@@ -41,7 +41,10 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Bean
     @Override
-    public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory databaseFactory, MongoCustomConversions customConversions, MongoMappingContext mappingContext) {
+    public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory databaseFactory, 
+                                                        MongoCustomConversions customConversions, 
+                                                        MongoMappingContext mappingContext) {
+
         MappingMongoConverter converter = super.mappingMongoConverter(databaseFactory, customConversions, mappingContext);
         converter.setTypeMapper(new DefaultMongoTypeMapper(null));
         return converter;
