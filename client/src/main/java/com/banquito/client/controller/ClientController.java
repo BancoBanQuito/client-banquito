@@ -1,10 +1,15 @@
 package com.banquito.client.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.banquito.client.controller.dto.ClientRS;
+import com.banquito.client.controller.mapper.ClientMapper;
+import com.banquito.client.model.Client;
 import com.banquito.client.service.ClientService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +23,17 @@ public class ClientController {
 
     public ClientController(ClientService clientService){
         this.clientService = clientService;
+    }
+
+    //obtener cliente por id
+    @GetMapping(value = "/{idCliente}")
+    public ResponseEntity<ClientRS> obtenerClientePorId(@PathVariable("idCliente") String id){
+        Client client = this.clientService.findById(id);
+        if (client != null){
+            return ResponseEntity.ok(ClientMapper.toClientRS(client));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     
     @RequestMapping(value = "", method = RequestMethod.POST)
