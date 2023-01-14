@@ -20,6 +20,8 @@ public class ClientService {
     public ClientService(ClientRepository clientRepository){
         this.clientRepository = clientRepository;
     }
+
+    //buscar por ID
     public Client findById(String id){
         Optional<Client> clientOpt = this.clientRepository.findById(id);
         if (clientOpt.isPresent()){
@@ -29,6 +31,7 @@ public class ClientService {
         }
     }
 
+    //crear cliente
     public void createClient(Client client){
         client.setFullname(client.getLastname() + " " + client.getFirstname());
         if (client.getBirthDate().after(new Date())) {
@@ -44,26 +47,33 @@ public class ClientService {
         this.clientRepository.save(client);
     }
 
+
+//obtener por tipo de identificacion y numero de identificacion
     public Client getTypeIdentificationAndIdentification(String typeIdentification, String identification ){
         return this.clientRepository.findByTypeIdentificationAndIdentification(typeIdentification, identification);
     }
 
+    //obtener todos
     public Iterable<Client> findAll(){
         return this.clientRepository.findAll();
     }
 
+    //obtener por apellidos
     public List<Client> getByLastname(String lastname){
         return this.clientRepository.findByLastnameOrderByNames(lastname);
     }
 
+    //obtener por nombres que contengan la cadena
     public List<Client> findByLastname(String lastname){
         return this.clientRepository.findByLastnameLikeOrderByNames(lastname);
     }
 
+    //buscar por estado
     public List<Client> findByStatus(String status){
         return this.clientRepository.findByStatusOrderByNames(status);
     }
 
+    //buscar por segmento
     public List<Client> findBySegment(String segment){
         return this.clientRepository.findBySegmentOrderByNames(segment);
     }
