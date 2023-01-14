@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ClientAddressRQ implements Serializable{
-    
+
     private String codeLocation;
     private String addressLineOne;
     private String addressLineTwo;

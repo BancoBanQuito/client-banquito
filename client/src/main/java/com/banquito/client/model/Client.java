@@ -13,11 +13,13 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.banquito.client.controller.dto.ClientRelationshipRS;
+
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@Builder
 @Document(collection = "clients")
 @CompoundIndexes({
     @CompoundIndex(name = "idxu_clients_typeIdentificationIdentification",
