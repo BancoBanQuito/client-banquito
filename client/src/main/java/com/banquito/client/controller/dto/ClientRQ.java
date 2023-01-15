@@ -42,8 +42,8 @@ public class ClientRQ implements Serializable {
     private Date creationDate;
 
     //Preguntar RQ para objeto
-    private List<ClientAddressRQ> clientAddressRQ;
-    private List<ClientPhoneRQ> clientPhoneRQ;
-    private List<ClientReferenceRQ> clientReferenceRQ;
-    private List<ClientRelationshipRQ> clientRelationshipRQ;
+    private List<ClientAddressRQ> address;
+    private List<ClientPhoneRQ> phone;
+    private List<ClientReferenceRQ> reference;
+    private List<ClientRelationshipRQ> relationship;
 }

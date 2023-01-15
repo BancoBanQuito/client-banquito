@@ -36,12 +36,12 @@ public class ClientService {
     public void createClient(Client client){
         client.setFullname(client.getLastname() + " " + client.getFirstname());
         if (client.getBirthDate().after(new Date())) {
-            throw new IllegalArgumentException("The date of birth cannot be greater than the current date" + client.getBirthDate());
+            throw new RuntimeException("The date of birth cannot be greater than the current date" + client.getBirthDate());
         }
         client.setStatus("INA");
         client.setCreationDate(new Date());
 
-        Client clienteTemp = this.clientRepository.findByTypeIdentificationAndIdentification(client.getIdentificationType(), client.getIdentification());
+        Client clienteTemp = this.clientRepository.findByIdentificationTypeAndIdentification(client.getIdentificationType(), client.getIdentification());
         if (clienteTemp != null){
             throw new RuntimeException("The client already exists");
         }
@@ -51,32 +51,33 @@ public class ClientService {
 
 //obtener por tipo de identificacion y numero de identificacion
     public Client getTypeIdentificationAndIdentification(String typeIdentification, String identification ){
-        return this.clientRepository.findByTypeIdentificationAndIdentification(typeIdentification, identification);
+        return this.clientRepository.findByIdentificationTypeAndIdentification(typeIdentification, identification);
     }
 
     //obtener todos
     public Iterable<Client> findAll(){
+        log.info("Getting all customers");
         return this.clientRepository.findAll();
     }
 
     //obtener por apellidos
     public List<Client> getByLastname(String lastname){
-        return this.clientRepository.findByLastnameOrderByNames(lastname);
+        return this.clientRepository.findByLastnameOrderByLastname(lastname);
     }
 
     //obtener por nombres que contengan la cadena
     public List<Client> findByLastname(String lastname){
-        return this.clientRepository.findByLastnameLikeOrderByNames(lastname);
+        return this.clientRepository.findByLastnameLikeOrderByLastname(lastname);
     }
 
     //buscar por estado
     public List<Client> findByStatus(String status){
-        return this.clientRepository.findByStatusOrderByNames(status);
+        return this.clientRepository.findByStatusOrderByStatus(status);
     }
 
     //buscar por segmento
     public List<Client> findBySegment(String segment){
-        return this.clientRepository.findBySegmentOrderByNames(segment);
+        return this.clientRepository.findBySegmentOrderByNameSegment(segment);
     }
 
     public void update(){

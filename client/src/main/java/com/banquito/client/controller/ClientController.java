@@ -1,13 +1,18 @@
 package com.banquito.client.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.UserRQ;
 import com.banquito.client.controller.mapper.ClientMapper;
@@ -28,6 +33,19 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    //obtener todos los clientes
+    @GetMapping(value = "/all")
+    public ResponseEntity<List<ClientRS>> allClients(){
+        List<Client> clients = new ArrayList<>();
+        Iterable<Client> clientsIterable = this.clientService.findAll();
+        clientsIterable.forEach(clients::add);
+        List<ClientRS> clientsRS = new ArrayList<>();
+        for (Client client : clients) {
+            clientsRS.add(ClientMapper.toClientRS(client));
+        }
+        return ResponseEntity.ok(clientsRS);
+    }
+
     //obtener cliente por id
     @GetMapping(value = "/{idCliente}")
     public ResponseEntity<ClientRS> obtenerClientePorId(@PathVariable("idCliente") String id){
@@ -36,6 +54,17 @@ public class ClientController {
             return ResponseEntity.ok(ClientMapper.toClientRS(client));
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    //crear cliente
+    @PostMapping(value = "/create")
+    public ResponseEntity<String> createClient(@RequestBody ClientRQ clientRQ){
+        try {
+            this.clientService.createClient(ClientMapper.toClient(clientRQ));
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
     
