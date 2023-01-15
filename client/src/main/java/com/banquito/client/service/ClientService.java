@@ -35,7 +35,7 @@ public class ClientService {
     public void createClient(Client client){
         client.setFullname(client.getLastname() + " " + client.getFirstname());
         if (client.getBirthDate().after(new Date())) {
-            throw new IllegalArgumentException("The date of birth cannot be greater than the current date" + client.getBirthDate());
+            throw new RuntimeException("The date of birth cannot be greater than the current date" + client.getBirthDate());
         }
         client.setStatus("INA");
         client.setCreationDate(new Date());
@@ -55,6 +55,7 @@ public class ClientService {
 
     //obtener todos
     public Iterable<Client> findAll(){
+        log.info("Getting all customers");
         return this.clientRepository.findAll();
     }
 
