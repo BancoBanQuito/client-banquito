@@ -6,13 +6,13 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.banquito.client.model.Client;
 
-public interface ClientRepository extends CrudRepository<Client, String>{
+public interface ClientRepository extends CrudRepository<Client, String>{  
 
-    Client findByTypeIdentificationAndIdentification(String identificationType, String identification);
+    Client findByIdentificationTypeAndIdentification(String identificationType, String identification);
 
-    List<Client> findByLastnameOrderByNames(String lastname);
-    List<Client> findByLastnameLikeOrderByNames(String lastname);
-    List<Client> findByStatusOrderByNames(String status);
-    List<Client> findBySegmentOrderByNames(String segment);
+    List<Client> findByLastnameOrderByLastname(String lastname);
+    List<Client> findByLastnameLikeOrderByLastname(String lastname);
+    List<Client> findByStatusOrderByStatus(String status);
+    List<Client> findBySegmentOrderByNameSegment(String segment);
     //preguntar si se hace un finby por los ingresos
 }
