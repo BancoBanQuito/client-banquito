@@ -1,7 +1,5 @@
 package com.banquito.client.model;
 
-
-
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -13,15 +11,14 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@Builder
 @Document(collection = "clients")
 @CompoundIndexes({
-    @CompoundIndex(name = "idxu_clients_typeIdentificationIdentification",
-    def = "{'identificationType': 1, 'identification': 1}", unique = true)
+        @CompoundIndex(name = "idxu_clients_typeIdentificationIdentification", def = "{'identificationType': 1, 'identification': 1}", unique = true)
 })
 public class Client {
 

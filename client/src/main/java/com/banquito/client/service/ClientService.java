@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.banquito.client.controller.dto.req.ClientAddressRQ;
 import com.banquito.client.model.Client;
 import com.banquito.client.model.ClientAddress;
 import com.banquito.client.repository.ClientRepository;
@@ -102,7 +103,7 @@ public class ClientService {
         }
     }
 
-    public void updateAddress(String id, String codeLocation, ClientAddress address) {
+    public void updateAddress(String id, String codeLocation, ClientAddressRQ address) {
         Optional<Client> client = clientRepository.findById(id);
         if (client.isPresent()) {
             List<ClientAddress> addresses = client.get().getAddress();

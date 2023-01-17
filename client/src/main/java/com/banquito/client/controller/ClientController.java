@@ -1,10 +1,17 @@
 package com.banquito.client.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.banquito.client.controller.dto.req.ClientAddressRQ;
+import com.banquito.client.controller.dto.res.ClientAddressRS;
 import com.banquito.client.service.ClientService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +23,10 @@ public class ClientController {
 
     private final ClientService clientService;
 
-    public ClientController(ClientService clientService){
+    public ClientController(ClientService clientService) {
         this.clientService = clientService;
     }
-    
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Object create() {
         return ResponseEntity.status(200).body("Client created");
@@ -60,24 +67,31 @@ public class ClientController {
         return ResponseEntity.status(200).body("Reference update or Reference Logically DELETED");
     }
 
-    @RequestMapping(value = "/address", method = RequestMethod.POST)
-    public Object createAddress() {
-        return ResponseEntity.status(200).body("Address created");
+    @RequestMapping(value = "/{id}/address", method = RequestMethod.POST)
+    public ResponseEntity<ClientAddressRS> addAddress(@PathVariable("id") String id,
+            @RequestBody ClientAddressRQ address) {
+        ClientAddressRS response = clientService.addAddress(id, address);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/address", method = RequestMethod.GET)
-    public Object getAddress() {
-        return ResponseEntity.status(200).body("Address");
+    @RequestMapping(value = "/{id}/address", method = RequestMethod.GET)
+    public ResponseEntity<List<ClientAddressRS>> getAddresses(@PathVariable("id") String id) {
+        List<ClientAddressRS> addresses = clientService.getAddresses(id);
+        return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/address", method = RequestMethod.PUT)
-    public Object updateAddress() {
-        return ResponseEntity.status(200).body("Address update");
+    @RequestMapping(value = "/{id}/address/{codeLocation}", method = RequestMethod.PUT)
+    public ResponseEntity<ClientAddressRS> updateAddress(@PathVariable("id") String id,
+            @PathVariable("codeLocation") String codeLocation, @RequestBody ClientAddressRQ address) {
+        ClientAddressRS response = clientService.updateAddress(id, codeLocation, address);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/phone", method = RequestMethod.PUT)
-    public Object updatePhone() {
-        return ResponseEntity.status(200).body("Address update");
+    @RequestMapping(value = "/{id}/address/{codeLocation}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> removeAddress(@PathVariable("id") String id,
+            @PathVariable("codeLocation") String codeLocation) {
+        clientService.removeAddress(id, codeLocation);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
