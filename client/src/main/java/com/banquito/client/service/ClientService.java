@@ -28,16 +28,16 @@ public class ClientService {
     }
 
     public Client findClientById(String id){
-        Optional<Client> clientOpt = this.clientRepository.findById(id);
-        if (!clientOpt.isPresent()){
+        Boolean clientExists = this.clientRepository.existsByIdentification(id);
+        if (!clientExists){
             throw new RuntimeException("The client does not exist");
         }
-        return clientOpt.get();
+        return this.clientRepository.findByIdentification(id);
     }
 
     @Transactional
     public void createClient(Client client){
-        Boolean clientExists = this.clientRepository.existsById(client.getIdentification());
+        Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
         if(!clientExists){
             throw new RuntimeException("The client already exists");
         }
