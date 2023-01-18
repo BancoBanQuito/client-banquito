@@ -13,8 +13,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.banquito.client.controller.dto.ClientRelationshipRS;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,7 +20,7 @@ import lombok.Data;
 @Builder
 @Document(collection = "clients")
 @CompoundIndexes({
-    @CompoundIndex(name = "idxu_clients_typeIdentificationIdentification",
+    @CompoundIndex(name = "idxu_clients_identificationTypeAndIdentification",
     def = "{'identificationType': 1, 'identification': 1}", unique = true)
 })
 public class Client {
@@ -40,13 +38,13 @@ public class Client {
     private String email;
     private Date birthDate;
     private String gender;
+    private String career;
+    private String companyName;
     private String companyType;
+    private Timestamp createDateCompany;
     private String appLegalRepresent;
     private String articlesAssociatedDoc;
     private String basicServicesDocument;
-    private String career;
-    private String companyName;
-    private Timestamp createDateCompany;
     private String fingerPrint;
     private String incomeTaxDocument;
     private Timestamp lastStatusDate;
@@ -57,16 +55,14 @@ public class Client {
     private String taxPaymentPlace;
     private String tinDocument;
     private String workStatus;
-    private String segment;
-    private String nameSegment;
-    private String statusSegment;
     private Date creationDate;
 
     private List<ClientRelationship> relationship;
     private List<ClientReference> reference;
     private List<ClientPhone> phone;
     private List<ClientAddress> address;
+    private List<ClientSegment> segment;
 
     @Version
-    private Number version;
+    private Long version;
 }

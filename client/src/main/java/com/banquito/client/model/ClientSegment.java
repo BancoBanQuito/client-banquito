@@ -2,10 +2,12 @@ package com.banquito.client.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @NoArgsConstructor
-public class ClientPhone {
+public class ClientSegment {
 
-    private String phoneNumber;
-    private String phoneType;
+    private String code;
+    private String name;
+    private String status;
 }

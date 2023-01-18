@@ -16,15 +16,12 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientRS implements Serializable{
+public class NewClientRQ implements Serializable {
 
-    private String id;
     private String identificationType;
     private String identification;
     private String lastname;
     private String firstname;
-    private String fullname;
-    private String status;
     private String email;
     private Date birthDate;
     private String gender;
@@ -45,12 +42,10 @@ public class ClientRS implements Serializable{
     private String taxPaymentPlace;
     private String tinDocument;
     private String workStatus;
-    private Date creationDate;
 
-    private List<ClientRelationship> relationship;
-    private List<ClientReference> reference;
-    private List<ClientPhone> phone;
     private List<ClientAddress> address;
+    private List<ClientPhone> phone;
+    private List<ClientReference> reference;
+    private List<ClientRelationship> relationship;
     private List<ClientSegment> segment;
-
 }

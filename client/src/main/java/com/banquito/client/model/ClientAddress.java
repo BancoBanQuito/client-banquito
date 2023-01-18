@@ -1,7 +1,5 @@
 package com.banquito.client.model;
 
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
@@ -9,8 +7,8 @@ import lombok.NoArgsConstructor;
 public class ClientAddress {
 
     private String codeLocation;
-    private String addressLineOne;
-    private String addressLineTwo;
+    private String lineOne;
+    private String lineTwo;
     private String latitude;
     private String longitude;
 }
