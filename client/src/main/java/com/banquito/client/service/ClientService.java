@@ -111,12 +111,12 @@ public class ClientService {
             clientToUpdate.getReference().add(client.getReference());
         }
 
-        /*Optional<ClientRelationship> referenceToUpdate = clientToUpdate.getReference().stream()
-                                                    .filter(p -> p.equals(client.getReference()))
+        /*Optional<ClientRelationship> relationshipToUpdate = clientToUpdate.getRelationship().stream()
+                                                    .filter(p -> p.equals(client.getRelationship()))
                                                     .findFirst();
 
-        if(!referenceToUpdate.isPresent()){
-            clientToUpdate.getReference().add(client.getReference());
+        if(!relationshipToUpdate.isPresent()){
+            clientToUpdate.getRelationship().add(client.getRelationship());
         }*/
         
         this.clientRepository.save(clientToUpdate);
