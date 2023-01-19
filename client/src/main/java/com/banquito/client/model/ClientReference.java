@@ -1,9 +1,10 @@
 package com.banquito.client.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+
 @Data
-@NoArgsConstructor
+@Builder
 public class ClientReference {
     
     private String name;

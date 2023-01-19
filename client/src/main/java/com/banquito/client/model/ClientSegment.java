@@ -1,10 +1,10 @@
 package com.banquito.client.model;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@Builder
 public class ClientSegment {
 
     private String code;
