@@ -16,6 +16,7 @@ import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
+import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.controller.mapper.ClientMapper;
 import com.banquito.client.model.Client;
 import com.banquito.client.service.ClientService;
@@ -75,9 +76,9 @@ public class ClientController {
     }
 
     @PutMapping(value = "/user/{idCliente}")
-    public ResponseEntity<String> updateClientLikeBankUser(@PathVariable("idCliente") String id, @RequestBody NewClientRQ clientRQ){
+    public ResponseEntity<String> updateClientLikeBankUser(@PathVariable("idCliente") String id, @RequestBody UpdateClientRQ clientRQ){
         try {
-            this.clientService.updateClientLikeBankUser(id, ClientMapper.toNewClient(clientRQ));
+            this.clientService.updateClientLikeBankUser(id, clientRQ);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             System.out.println(e);
