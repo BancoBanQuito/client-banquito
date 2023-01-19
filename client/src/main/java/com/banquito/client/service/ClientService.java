@@ -8,10 +8,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.model.Client;
 import com.banquito.client.model.ClientAddress;
 import com.banquito.client.model.ClientPhone;
 import com.banquito.client.model.ClientReference;
+import com.banquito.client.model.ClientRelationship;
 import com.banquito.client.model.ClientSegment;
 import com.banquito.client.repository.ClientRepository;
 
@@ -53,7 +55,7 @@ public class ClientService {
     }
 
     @Transactional
-    public void updateClientLikeBankUser(String id, Client client) {
+    public void updateClientLikeBankUser(String id, UpdateClientRQ client) {
         Boolean clientExists = this.clientRepository.existsByIdentification(id);
         if (!clientExists) {
             throw new RuntimeException("Client not found");
@@ -77,34 +79,46 @@ public class ClientService {
         clientToUpdate.setTaxPaymentPlace(client.getTaxPaymentPlace());
         clientToUpdate.setCreationDate(new Date());
 
-        List<ClientAddress> adressToUpdate = this.clientRepository.findByAddressCodeLocation(
-            clientToUpdate.getAddress().get(0).getCodeLocation());
+        Optional<ClientAddress> adressToUpdate = clientToUpdate.getAddress().stream()
+                                            .filter(p -> p.equals(client.getAddress()))
+                                            .findFirst();
 
-        clientToUpdate.setAddress(client.getAddress());
+        if(!adressToUpdate.isPresent()){
+            clientToUpdate.getAddress().add(client.getAddress());
+        }
 
-        List<ClientSegment> segmentToUpdate = this.clientRepository.findBySegmentCode(
-            clientToUpdate.getAddress().get(0).getCodeLocation());
-        /*if(segmentToUpdate.get(0).getName().equals(client.getSegment().get(0).getName()) &&
-            segmentToUpdate.get(0).getStatus().equals(client.getSegment().get(0).getStatus())){
-            throw new RuntimeException("Segment " + segmentToUpdate.get(0).getName() + " already exist");
+        /*Optional<ClientSegment> segmentToUpdate = clientToUpdate.getSegment().stream()
+                                                .filter(p -> p.equals(client.getSegment()))
+                                                .findFirst();
+
+        if(!segmentToUpdate.isPresent()){
+            clientToUpdate.getSegment().add(client.getSegment());
+        }/* */
+
+        Optional<ClientPhone> phoneToUpdate = clientToUpdate.getPhone().stream()
+                                            .filter(p -> p.equals(client.getPhone()))
+                                            .findFirst();
+        
+        if(!phoneToUpdate.isPresent()){
+            clientToUpdate.getPhone().add(client.getPhone());
+        }                                  
+
+        Optional<ClientReference> referenceToUpdate = clientToUpdate.getReference().stream()
+                                                    .filter(p -> p.equals(client.getReference()))
+                                                    .findFirst();
+
+        if(!referenceToUpdate.isPresent()){
+            clientToUpdate.getReference().add(client.getReference());
+        }
+
+        /*Optional<ClientRelationship> referenceToUpdate = clientToUpdate.getReference().stream()
+                                                    .filter(p -> p.equals(client.getReference()))
+                                                    .findFirst();
+
+        if(!referenceToUpdate.isPresent()){
+            clientToUpdate.getReference().add(client.getReference());
         }*/
-        clientToUpdate.setSegment(client.getSegment());
-
-        /*List<ClientPhone> phoneToUpdate = this.clientRepository.findByPhonePhoneNumber(
-            clientToUpdate.getPhone().get(0).getPhoneNumber());
-        if(phoneToUpdate.get(0).getPhoneNumber().equals(client.getPhone().get(0).getPhoneNumber()) &&
-        phoneToUpdate.get(0).getPhoneType().equals(client.getPhone().get(0).getPhoneType())){
-            throw new RuntimeException("The phone " + phoneToUpdate.get(0).getPhoneNumber() + " already exist");
-        }*/
-        clientToUpdate.setPhone(client.getPhone());
-
-        /*List<ClientReference> referenceToUpdate = this.clientRepository.findByReferenceName(
-            clientToUpdate.getReference().get(0).getName());
-        if(referenceToUpdate.get(0).getName().equals(client.getReference().get(0).getName()) &&
-        referenceToUpdate.get(0).getPhone().equals(client.getReference().get(0).getPhone())){
-            throw new RuntimeException("The reference " + referenceToUpdate.get(0).getName() + " already exist");
-        }*/
-        clientToUpdate.setReference(client.getReference());
+        
         this.clientRepository.save(clientToUpdate);
     }
 
