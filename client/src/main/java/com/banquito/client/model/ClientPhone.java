@@ -1,10 +1,10 @@
 package com.banquito.client.model;
 
-import org.springframework.data.mongodb.core.mapping.Field;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 @Data
-@NoArgsConstructor
+@Builder
 public class ClientPhone {
 
     private String phoneNumber;

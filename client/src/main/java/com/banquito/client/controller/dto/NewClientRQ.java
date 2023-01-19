@@ -1,40 +1,26 @@
-package com.banquito.client.model;
+package com.banquito.client.controller.dto;
 
-
-
-
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.banquito.client.model.ClientAddress;
+import com.banquito.client.model.ClientPhone;
+import com.banquito.client.model.ClientReference;
+import com.banquito.client.model.ClientRelationship;
+import com.banquito.client.model.ClientSegment;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-@Document(collection = "clients")
-@CompoundIndexes({
-    @CompoundIndex(name = "idxu_clients_identificationTypeAndIdentification",
-    def = "{'identificationType': 1, 'identification': 1}", unique = true)
-})
-public class Client {
+public class NewClientRQ implements Serializable {
 
-    @Id
-    private String id;
     private String identificationType;
     private String identification;
-
-    @Indexed
     private String lastname;
     private String firstname;
-    private String fullname;
-    private String status;
     private String email;
     private Date birthDate;
     private String gender;
@@ -55,14 +41,10 @@ public class Client {
     private String taxPaymentPlace;
     private String tinDocument;
     private String workStatus;
-    private Date creationDate;
 
-    private List<ClientRelationship> relationship;
-    private List<ClientReference> reference;
-    private List<ClientPhone> phone;
     private List<ClientAddress> address;
+    private List<ClientPhone> phone;
+    private List<ClientReference> reference;
+    private List<ClientRelationship> relationship;
     private List<ClientSegment> segment;
-
-    @Version
-    private Long version;
 }
