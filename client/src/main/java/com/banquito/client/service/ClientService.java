@@ -1,12 +1,20 @@
 package com.banquito.client.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.model.Client;
+import com.banquito.client.model.ClientAddress;
+import com.banquito.client.model.ClientPhone;
+import com.banquito.client.model.ClientReference;
+import com.banquito.client.model.ClientRelationship;
+import com.banquito.client.model.ClientSegment;
 import com.banquito.client.model.User;
 import com.banquito.client.repository.ClientRepository;
 
@@ -22,68 +30,133 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    //buscar por ID
-    public Client findById(String id){
-        Optional<Client> clientOpt = this.clientRepository.findById(id);
-        if (clientOpt.isPresent()){
-            return clientOpt.get();
-        } else {
+    public Client findClientById(String id){
+        Boolean clientExists = this.clientRepository.existsByIdentification(id);
+        if (!clientExists){
             throw new RuntimeException("The client does not exist");
         }
+        return this.clientRepository.findByIdentification(id);
     }
 
-    //crear cliente
+    @Transactional
     public void createClient(Client client){
-        client.setFullname(client.getLastname() + " " + client.getFirstname());
-        if (client.getBirthDate().after(new Date())) {
-            throw new RuntimeException("The date of birth cannot be greater than the current date" + client.getBirthDate());
-        }
-        client.setStatus("INA");
-        client.setCreationDate(new Date());
-
-        Client clienteTemp = this.clientRepository.findByIdentificationTypeAndIdentification(client.getIdentificationType(), client.getIdentification());
-        if (clienteTemp != null){
+        Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
+        if(clientExists){
             throw new RuntimeException("The client already exists");
         }
+
+        if (!isLegal(client.getBirthDate())){
+            throw new RuntimeException("The date of birth cannot be greater than the current date" + client.getBirthDate());
+        }
+
+        client.setFullname(client.getLastname() + " " + client.getFirstname());
+        client.setStatus("INA");
+        client.setCreationDate(new Date());
         this.clientRepository.save(client);
     }
 
+    @Transactional
+    public void updateClientLikeBankUser(String id, UpdateClientRQ client) {
+        Boolean clientExists = this.clientRepository.existsByIdentification(id);
+        if (!clientExists) {
+            throw new RuntimeException("Client not found");
+        }
+        Client clientToUpdate = this.clientRepository.findByIdentification(id);
 
-//obtener por tipo de identificacion y numero de identificacion
-    public Client getTypeIdentificationAndIdentification(String typeIdentification, String identification ){
-        return this.clientRepository.findByIdentificationTypeAndIdentification(typeIdentification, identification);
+        clientToUpdate.setEmail(client.getEmail());
+        clientToUpdate.setGender(client.getGender());
+        clientToUpdate.setCompanyName(client.getCompanyName());
+        clientToUpdate.setCompanyType(client.getCompanyType());
+        clientToUpdate.setWorkStatus(client.getWorkStatus());
+        clientToUpdate.setAppLegalRepresent(client.getAppLegalRepresent());
+        clientToUpdate.setArticlesAssociatedDoc(client.getArticlesAssociatedDoc());
+        clientToUpdate.setBasicServicesDocument(client.getBasicServicesDocument());
+        clientToUpdate.setCareer(client.getCareer());
+        clientToUpdate.setCreateDateCompany(client.getCreateDateCompany());
+        clientToUpdate.setMaritalStatus(client.getMaritalStatus());
+        clientToUpdate.setMonthlyAvgIncome(client.getMonthlyAvgIncome());
+        clientToUpdate.setNationality(client.getNationality());
+        clientToUpdate.setSignature(client.getSignature());
+        clientToUpdate.setTaxPaymentPlace(client.getTaxPaymentPlace());
+        clientToUpdate.setCreationDate(new Date());
+
+        Optional<ClientAddress> adressToUpdate = clientToUpdate.getAddress().stream()
+                                            .filter(p -> p.equals(client.getAddress()))
+                                            .findFirst();
+
+        if(!adressToUpdate.isPresent()){
+            clientToUpdate.getAddress().add(client.getAddress());
+        }
+
+        /*Optional<ClientSegment> segmentToUpdate = clientToUpdate.getSegment().stream()
+                                                .filter(p -> p.equals(client.getSegment()))
+                                                .findFirst();
+
+        if(!segmentToUpdate.isPresent()){
+            clientToUpdate.getSegment().add(client.getSegment());
+        }/* */
+
+        Optional<ClientPhone> phoneToUpdate = clientToUpdate.getPhone().stream()
+                                            .filter(p -> p.equals(client.getPhone()))
+                                            .findFirst();
+        
+        if(!phoneToUpdate.isPresent()){
+            clientToUpdate.getPhone().add(client.getPhone());
+        }                                  
+
+        Optional<ClientReference> referenceToUpdate = clientToUpdate.getReference().stream()
+                                                    .filter(p -> p.equals(client.getReference()))
+                                                    .findFirst();
+
+        if(!referenceToUpdate.isPresent()){
+            clientToUpdate.getReference().add(client.getReference());
+        }
+
+        /*Optional<ClientRelationship> relationshipToUpdate = clientToUpdate.getRelationship().stream()
+                                                    .filter(p -> p.equals(client.getRelationship()))
+                                                    .findFirst();
+
+        if(!relationshipToUpdate.isPresent()){
+            clientToUpdate.getRelationship().add(client.getRelationship());
+        }*/
+        
+        this.clientRepository.save(clientToUpdate);
     }
 
-    //obtener todos
-    public Iterable<Client> findAll(){
-        log.info("Getting all customers");
-        return this.clientRepository.findAll();
-    }
+    @Transactional
+    public void updateClient(String id, Client client) {
+        Boolean clientExists = this.clientRepository.existsByIdentification(id);
+        if (clientExists) {
+            throw new RuntimeException("Client not found");
+        }
+        Client clientToUpdate = this.clientRepository.findByIdentification(id);
 
-    //obtener por apellidos
-    public List<Client> getByLastname(String lastname){
-        return this.clientRepository.findByLastnameOrderByLastname(lastname);
-    }
+        clientToUpdate.setEmail(client.getEmail());
+        clientToUpdate.setGender(client.getGender());
+        
+        List<ClientAddress> adressToUpdate = this.clientRepository.findByAddressCodeLocation(
+            clientToUpdate.getAddress().get(0).getCodeLocation());
+        if(adressToUpdate.get(0).getLatitude().equals(client.getAddress().get(0).getLatitude()) &&            
+            adressToUpdate.get(0).getLongitude().equals(client.getAddress().get(0).getLongitude()) &&
+            adressToUpdate.get(0).getLineOne().equals(client.getAddress().get(0).getLineOne()) &&
+            adressToUpdate.get(0).getLineTwo().equals(client.getAddress().get(0).getLineTwo())){
+            throw new RuntimeException("Adress " + adressToUpdate.get(0).getCodeLocation() + " already exist");
+        }
+        clientToUpdate.setAddress(client.getAddress());
 
-    //obtener por nombres que contengan la cadena
-    public List<Client> findByLastname(String lastname){
-        return this.clientRepository.findByLastnameLikeOrderByLastname(lastname);
-    }
+        List<ClientPhone> phoneToUpdate = this.clientRepository.findByPhonePhoneNumber(
+            clientToUpdate.getPhone().get(0).getPhoneNumber());
+        if(phoneToUpdate.get(0).getPhoneNumber().equals(client.getPhone().get(0).getPhoneNumber()) &&
+        phoneToUpdate.get(0).getPhoneType().equals(client.getPhone().get(0).getPhoneType())){
+            throw new RuntimeException("The phone " + phoneToUpdate.get(0).getPhoneNumber() + " already exist");
+        }
+        clientToUpdate.setPhone(client.getPhone());
 
-    //buscar por estado
-    public List<Client> findByStatus(String status){
-        return this.clientRepository.findByStatusOrderByStatus(status);
-    }
-
-    //buscar por segmento
-    public List<Client> findBySegment(String segment){
-        return this.clientRepository.findBySegmentOrderByNameSegment(segment);
-    }
-
-    public void update(){
+        this.clientRepository.save(clientToUpdate);
     }
 
     public void login(){
+
     }
 
     public boolean singUp(String typeIdentification, String identification,String email, User newUser){
@@ -104,24 +177,32 @@ public class ClientService {
         return false;
     }
 
-    public void createReference() {
+    @Transactional
+    public Client deleteClientByIdentification(Client client){
+        Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
+        if (!clientExists) {
+            throw new RuntimeException("Client not found");
+        }
+        Client clientToUpdate = this.clientRepository.findByIdentification(client.getIdentification());
+            clientToUpdate.setStatus(client.getStatus());
+            clientToUpdate.setLastStatusDate(client.getLastStatusDate());
+            this.clientRepository.save(clientToUpdate);
+            return clientToUpdate;
     }
 
-    public void getReference() {
+    @Transactional
+    public Client getTypeIdentificationAndIdentification(String identification , String identificationType){
+        return this.clientRepository.findByIdentification(identification, identificationTyoe);
     }
 
-    public void updateReference() {
+    @Transactional
+    public List<Client> findClientBySimilarLastname(String lastname){
+        return this.clientRepository.findByLastnameLikeOrderByLastname(lastname);
     }
 
-    public void createAddress() {
-    }
-
-    public void getAddress() {
-    }
-
-    public void updateAddress() {
-    }
-
-    public void updatePhone() {
+    public boolean isLegal(Date date){
+        Date actualDate = new Date();
+        int age = actualDate.getYear()-date.getYear();
+        return age > 18;
     }
 }

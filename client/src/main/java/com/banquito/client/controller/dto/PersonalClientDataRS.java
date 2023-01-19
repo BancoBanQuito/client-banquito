@@ -11,12 +11,16 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientRQ implements Serializable {
+public class PersonalClientDataRS implements Serializable{
 
+    private String identificationType;
+    private String identification;
+    private String fullname;
     private String email;
     private String gender;
-    private String career;
+    private String nationality;
 
-    private List<ClientAddress> address;
     private List<ClientPhone> phone;
+    private List<ClientAddress> address;
+
 }

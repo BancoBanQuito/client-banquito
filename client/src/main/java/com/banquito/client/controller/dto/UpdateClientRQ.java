@@ -2,7 +2,6 @@ package com.banquito.client.controller.dto;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import com.banquito.client.model.ClientAddress;
 import com.banquito.client.model.ClientPhone;
@@ -15,15 +14,11 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientRS implements Serializable{
-
-    private String id;
+public class UpdateClientRQ implements Serializable{
     private String identificationType;
     private String identification;
     private String lastname;
     private String firstname;
-    private String fullname;
-    private String status;
     private String email;
     private Date birthDate;
     private String gender;
@@ -44,12 +39,10 @@ public class ClientRS implements Serializable{
     private String taxPaymentPlace;
     private String tinDocument;
     private String workStatus;
-    private Date creationDate;
 
-    private List<ClientRelationship> relationship;
-    private List<ClientReference> reference;
-    private List<ClientPhone> phone;
-    private List<ClientAddress> address;
-    private List<ClientSegment> segment;
-
+    private ClientAddress address;
+    private ClientPhone phone;
+    private ClientReference reference;
+    private ClientRelationship relationship;
+    private ClientSegment segment;
 }
