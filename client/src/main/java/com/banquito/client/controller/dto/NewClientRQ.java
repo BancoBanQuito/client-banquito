@@ -1,7 +1,6 @@
 package com.banquito.client.controller.dto;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -28,13 +27,13 @@ public class NewClientRQ implements Serializable {
     private String career;
     private String companyName;
     private String companyType;
-    private Timestamp createDateCompany;
+    private Date createDateCompany;
     private String appLegalRepresent;
     private String articlesAssociatedDoc;
     private String basicServicesDocument;
     private String fingerPrint;
     private String incomeTaxDocument;
-    private Timestamp lastStatusDate;
+    private Date lastStatusDate;
     private String maritalStatus;
     private String monthlyAvgIncome;
     private String nationality;

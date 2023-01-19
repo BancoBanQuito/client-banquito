@@ -38,11 +38,11 @@ public class ClientService {
     @Transactional
     public void createClient(Client client){
         Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
-        if(!clientExists){
+        if(clientExists){
             throw new RuntimeException("The client already exists");
         }
 
-        if (client.getBirthDate().after(new Date())) {
+        if (!isLegal(client.getBirthDate())){
             throw new RuntimeException("The date of birth cannot be greater than the current date" + client.getBirthDate());
         }
 
@@ -79,36 +79,31 @@ public class ClientService {
 
         List<ClientAddress> adressToUpdate = this.clientRepository.findByAddressCodeLocation(
             clientToUpdate.getAddress().get(0).getCodeLocation());
-        if(adressToUpdate.get(0).getLatitude().equals(client.getAddress().get(0).getLatitude()) &&            
-            adressToUpdate.get(0).getLongitude().equals(client.getAddress().get(0).getLongitude()) &&
-            adressToUpdate.get(0).getLineOne().equals(client.getAddress().get(0).getLineOne()) &&
-            adressToUpdate.get(0).getLineTwo().equals(client.getAddress().get(0).getLineTwo())){
-            throw new RuntimeException("Adress " + adressToUpdate.get(0).getCodeLocation() + " already exist");
-        }
+
         clientToUpdate.setAddress(client.getAddress());
 
         List<ClientSegment> segmentToUpdate = this.clientRepository.findBySegmentCode(
             clientToUpdate.getAddress().get(0).getCodeLocation());
-        if(segmentToUpdate.get(0).getName().equals(client.getSegment().get(0).getName()) &&
+        /*if(segmentToUpdate.get(0).getName().equals(client.getSegment().get(0).getName()) &&
             segmentToUpdate.get(0).getStatus().equals(client.getSegment().get(0).getStatus())){
             throw new RuntimeException("Segment " + segmentToUpdate.get(0).getName() + " already exist");
-        }
+        }*/
         clientToUpdate.setSegment(client.getSegment());
 
-        List<ClientPhone> phoneToUpdate = this.clientRepository.findByPhonePhoneNumber(
+        /*List<ClientPhone> phoneToUpdate = this.clientRepository.findByPhonePhoneNumber(
             clientToUpdate.getPhone().get(0).getPhoneNumber());
         if(phoneToUpdate.get(0).getPhoneNumber().equals(client.getPhone().get(0).getPhoneNumber()) &&
         phoneToUpdate.get(0).getPhoneType().equals(client.getPhone().get(0).getPhoneType())){
             throw new RuntimeException("The phone " + phoneToUpdate.get(0).getPhoneNumber() + " already exist");
-        }
+        }*/
         clientToUpdate.setPhone(client.getPhone());
 
-        List<ClientReference> referenceToUpdate = this.clientRepository.findByReferenceName(
+        /*List<ClientReference> referenceToUpdate = this.clientRepository.findByReferenceName(
             clientToUpdate.getReference().get(0).getName());
         if(referenceToUpdate.get(0).getName().equals(client.getReference().get(0).getName()) &&
         referenceToUpdate.get(0).getPhone().equals(client.getReference().get(0).getPhone())){
             throw new RuntimeException("The reference " + referenceToUpdate.get(0).getName() + " already exist");
-        }
+        }*/
         clientToUpdate.setReference(client.getReference());
         this.clientRepository.save(clientToUpdate);
     }
@@ -116,7 +111,7 @@ public class ClientService {
     @Transactional
     public void updateClient(String id, Client client) {
         Boolean clientExists = this.clientRepository.existsByIdentification(id);
-        if (!clientExists) {
+        if (clientExists) {
             throw new RuntimeException("Client not found");
         }
         Client clientToUpdate = this.clientRepository.findByIdentification(id);
@@ -168,4 +163,9 @@ public class ClientService {
         return this.clientRepository.findByLastnameLikeOrderByLastname(lastname);
     }
 
+    public boolean isLegal(Date date){
+        Date actualDate = new Date();
+        int age = actualDate.getYear()-date.getYear();
+        return age > 18;
+    }
 }

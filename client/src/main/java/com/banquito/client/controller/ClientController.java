@@ -63,22 +63,24 @@ public class ClientController {
         }
     }
 
-    @PostMapping(value = "/")
+    @PostMapping
     public ResponseEntity<String> createClient(@RequestBody NewClientRQ clientRQ){
         try {
             this.clientService.createClient(ClientMapper.toNewClient(clientRQ));
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @PutMapping(value = "/user/{idCliente}")
-    public ResponseEntity<String> updateClientLikeBankUser(@PathVariable("idCliente") String id, @RequestBody ClientRQ clientRQ){
+    public ResponseEntity<String> updateClientLikeBankUser(@PathVariable("idCliente") String id, @RequestBody NewClientRQ clientRQ){
         try {
-            this.clientService.updateClientLikeBankUser(id, ClientMapper.toClient(clientRQ));
+            this.clientService.updateClientLikeBankUser(id, ClientMapper.toNewClient(clientRQ));
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.internalServerError().build();
         }
     }

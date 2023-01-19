@@ -1,6 +1,6 @@
 package com.banquito.client.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import lombok.Builder;
 import lombok.Data;
