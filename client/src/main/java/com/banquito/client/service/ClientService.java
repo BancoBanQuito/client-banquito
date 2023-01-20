@@ -1,5 +1,8 @@
 package com.banquito.client.service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -178,9 +181,63 @@ public class ClientService {
 
     }
 
-    public boolean isLegal(Date date) {
-        Date actualDate = new Date();
-        int age = actualDate.getYear() - date.getYear();
-        return age > 18;
+    @Transactional
+    public void updateAdress(String identificationType, String identification, ClientAddress adress) {
+
+        Boolean clientExists = this.clientRepository.existsByIdentificationTypeAndIdentification(identificationType,
+                identification);
+        if (!clientExists) {
+            throw new RuntimeException("The client does not exist");
+        }
+        Client clientToUpdate = this.clientRepository.findByIdentificationTypeAndIdentification(identificationType,
+                identification);
+        Optional<ClientAddress> adressToUpdate = clientToUpdate.getAddress().stream()
+                .filter(p -> p.equals(adress))
+                .findFirst();
+
+        if (!adressToUpdate.isPresent()) {
+            clientToUpdate.getAddress().add(adress);
+            this.clientRepository.save(clientToUpdate);
+        }
+
     }
+
+    @Transactional
+    public void updateReference(String identificationType, String identification, ClientReference reference) {
+
+        Boolean clientExists = this.clientRepository.existsByIdentificationTypeAndIdentification(identificationType,
+                identification);
+        if (!clientExists) {
+            throw new RuntimeException("The client does not exist");
+        }
+        Client clientToUpdate = this.clientRepository.findByIdentificationTypeAndIdentification(identificationType,
+                identification);
+        Optional<ClientReference> referenceToUpdate = clientToUpdate.getReference().stream()
+                .filter(p -> p.equals(reference))
+                .findFirst();
+
+        if (!referenceToUpdate.isPresent()) {
+            clientToUpdate.getReference().add(reference);
+            this.clientRepository.save(clientToUpdate);
+        }
+
+    }
+    /*
+     * public boolean isLegal(Date date) {
+     * Date actualDate = new Date();
+     * int age = actualDate.getYear() - date.getYear();
+     * return age > 18;
+     * }
+     */
+
+    public boolean isLegal(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date can not be null");
+        }
+        LocalDate birthdate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate now = LocalDate.now();
+        Period age = Period.between(birthdate, now);
+        return age.getYears() > 18;
+    }
+
 }

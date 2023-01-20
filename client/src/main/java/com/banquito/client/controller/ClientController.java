@@ -15,8 +15,10 @@ import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
+import com.banquito.client.controller.dto.UpdateAdressRQ;
 import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.controller.dto.UpdatePhoneRQ;
+import com.banquito.client.controller.dto.UpdateReferenceRQ;
 import com.banquito.client.controller.mapper.ClientMapper;
 import com.banquito.client.model.Client;
 import com.banquito.client.service.ClientService;
@@ -105,4 +107,25 @@ public class ClientController {
         }
     }
 
+    @PutMapping(value = "/client/reference")
+    public ResponseEntity<String> updateClientReference(@RequestBody UpdateReferenceRQ referenceRQ) {
+        try {
+            this.clientService.updateReference(referenceRQ.getIdentificationType(), referenceRQ.getIdentification(),
+                    referenceRQ.getReference());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping(value = "/client/adress")
+    public ResponseEntity<String> updateClientAdress(@RequestBody UpdateAdressRQ adressRQ) {
+        try {
+            this.clientService.updateAdress(adressRQ.getIdentificationType(), adressRQ.getIdentification(),
+                    adressRQ.getAdress());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
