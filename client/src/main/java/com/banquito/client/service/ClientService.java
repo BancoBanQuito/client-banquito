@@ -83,17 +83,6 @@ public class ClientService {
             clientToUpdate.getAddress().add(client.getAddress());
         }
 
-        /*
-         * Optional<ClientSegment> segmentToUpdate =
-         * clientToUpdate.getSegment().stream()
-         * .filter(p -> p.equals(client.getSegment()))
-         * .findFirst();
-         * 
-         * if(!segmentToUpdate.isPresent()){
-         * clientToUpdate.getSegment().add(client.getSegment());
-         * }/*
-         */
-
         Optional<ClientPhone> phoneToUpdate = clientToUpdate.getPhone().stream()
                 .filter(p -> p.equals(client.getPhone()))
                 .findFirst();
@@ -109,17 +98,6 @@ public class ClientService {
         if (!referenceToUpdate.isPresent()) {
             clientToUpdate.getReference().add(client.getReference());
         }
-
-        /*
-         * Optional<ClientRelationship> relationshipToUpdate =
-         * clientToUpdate.getRelationship().stream()
-         * .filter(p -> p.equals(client.getRelationship()))
-         * .findFirst();
-         * 
-         * if(!relationshipToUpdate.isPresent()){
-         * clientToUpdate.getRelationship().add(client.getRelationship());
-         * }
-         */
 
         this.clientRepository.save(clientToUpdate);
     }

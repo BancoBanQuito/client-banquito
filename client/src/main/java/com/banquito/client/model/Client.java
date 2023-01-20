@@ -1,8 +1,5 @@
 package com.banquito.client.model;
 
-
-
-
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +17,7 @@ import lombok.Data;
 @Builder
 @Document(collection = "clients")
 @CompoundIndexes({
-    @CompoundIndex(name = "idxu_clients_identificationTypeAndIdentification",
-    def = "{'identificationType': 1, 'identification': 1}", unique = true)
+        @CompoundIndex(name = "idxu_clients_identificationTypeAndIdentification", def = "{'identificationType': 1, 'identification': 1}", unique = true)
 })
 public class Client {
 

@@ -15,7 +15,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientRS implements Serializable{
+public class ClientRS implements Serializable {
 
     private String id;
     private String identificationType;
