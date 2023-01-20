@@ -177,6 +177,25 @@ public class ClientService {
         return this.clientRepository.findByLastnameLikeOrderByLastname(lastname);
     }
 
+    @Transactional
+    public void updatePhone(String identificationType, String identification, ClientPhone phone){
+        
+        Boolean clientExists = this.clientRepository.existsByIdentificationTypeAndIdentification(identificationType, identification);
+        if (!clientExists){
+            throw new RuntimeException("The client does not exist");
+        }
+        Client clientToUpdate = this.clientRepository.findByIdentificationTypeAndIdentification(identificationType, identification);
+        Optional<ClientPhone> phoneToUpdate = clientToUpdate.getPhone().stream()
+                                            .filter(p -> p.equals(phone))
+                                            .findFirst();
+        
+        if(!phoneToUpdate.isPresent()){
+            clientToUpdate.getPhone().add(phone);
+            this.clientRepository.save(clientToUpdate);
+        }
+
+    }
+
     public boolean isLegal(Date date){
         Date actualDate = new Date();
         int age = actualDate.getYear()-date.getYear();
