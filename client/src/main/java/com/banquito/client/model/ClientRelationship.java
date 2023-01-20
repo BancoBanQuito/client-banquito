@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 @Builder
-
 public class ClientRelationship {
 
     private String name;

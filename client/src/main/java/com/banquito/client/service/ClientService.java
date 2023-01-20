@@ -12,9 +12,8 @@ import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.model.Client;
 import com.banquito.client.model.ClientAddress;
 import com.banquito.client.model.ClientPhone;
-import com.banquito.client.model.ClientReference;
-import com.banquito.client.model.ClientRelationship;
-import com.banquito.client.model.ClientSegment;
+import com.banquito.client.model.ClientReference; 
+import com.banquito.client.model.User;
 import com.banquito.client.repository.ClientRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +28,12 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public Client findClientById(String id){
+    public Client findClientById(String id, String identificationType){
         Boolean clientExists = this.clientRepository.existsByIdentification(id);
         if (!clientExists){
             throw new RuntimeException("The client does not exist");
         }
-        return this.clientRepository.findByIdentification(id);
+        return this.clientRepository.findByIdentificationAndIdentificationType(id, identificationType);
     }
 
     @Transactional
@@ -60,7 +59,7 @@ public class ClientService {
         if (!clientExists) {
             throw new RuntimeException("Client not found");
         }
-        Client clientToUpdate = this.clientRepository.findByIdentification(id);
+        Client clientToUpdate = this.clientRepository.findByIdentificationAndIdentificationType(id, client.getIdentificationType());
 
         clientToUpdate.setEmail(client.getEmail());
         clientToUpdate.setGender(client.getGender());
@@ -128,7 +127,7 @@ public class ClientService {
         if (clientExists) {
             throw new RuntimeException("Client not found");
         }
-        Client clientToUpdate = this.clientRepository.findByIdentification(id);
+        Client clientToUpdate = this.clientRepository.findByIdentificationAndIdentificationType(id, client.getIdentificationType());
 
         clientToUpdate.setEmail(client.getEmail());
         clientToUpdate.setGender(client.getGender());
@@ -154,13 +153,33 @@ public class ClientService {
         this.clientRepository.save(clientToUpdate);
     }
 
+    public boolean login(Client client){
+        Client registeredClient = getTypeIdentificationAndIdentification(client.getIdentificationType(), client.getIdentification());
+        if(registeredClient != null && 
+        registeredClient.getEmail().equals(client.getEmail()) && registeredClient.getUser().getUserName().equals(client.getUser().getPassword())){
+            registeredClient.setUser(client.getUser());
+            this.clientRepository.save(registeredClient);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean singUp(Client client){
+        Client registeredClient = getTypeIdentificationAndIdentification(client.getIdentificationType(), client.getIdentification());
+        if(registeredClient != null && registeredClient.getEmail().equals(client.getEmail()) && registeredClient.getUser() == null){
+            this.clientRepository.save(registeredClient);
+            return true;
+        }
+        return false;
+    }
+
     @Transactional
     public Client deleteClientByIdentification(Client client){
         Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
         if (!clientExists) {
             throw new RuntimeException("Client not found");
         }
-        Client clientToUpdate = this.clientRepository.findByIdentification(client.getIdentification());
+        Client clientToUpdate = this.clientRepository.findByIdentificationAndIdentificationType(client.getIdentification(), client.getIdentificationType());
             clientToUpdate.setStatus(client.getStatus());
             clientToUpdate.setLastStatusDate(client.getLastStatusDate());
             this.clientRepository.save(clientToUpdate);
@@ -168,8 +187,8 @@ public class ClientService {
     }
 
     @Transactional
-    public Client getTypeIdentificationAndIdentification(String identification ){
-        return this.clientRepository.findByIdentification(identification);
+    public Client getTypeIdentificationAndIdentification(String identification , String identificationType){
+        return this.clientRepository.findByIdentificationAndIdentificationType(identification, identificationType);
     }
 
     @Transactional

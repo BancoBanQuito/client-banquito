@@ -9,6 +9,7 @@ import com.banquito.client.model.ClientPhone;
 import com.banquito.client.model.ClientReference;
 import com.banquito.client.model.ClientRelationship;
 import com.banquito.client.model.ClientSegment;
+import com.banquito.client.model.User;
 
 import lombok.Builder;
 import lombok.Data;
@@ -46,6 +47,7 @@ public class ClientRS implements Serializable{
     private String workStatus;
     private Date creationDate;
 
+    private User user;
     private List<ClientRelationship> relationship;
     private List<ClientReference> reference;
     private List<ClientPhone> phone;

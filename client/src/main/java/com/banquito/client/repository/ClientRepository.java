@@ -14,6 +14,7 @@ import com.banquito.client.model.ClientSegment;
 @Repository
 public interface ClientRepository extends CrudRepository<Client, String>{  
 
+    Client findByIdentificationAndIdentificationType(String identification, String identificationType);
     Client findByIdentification(String identification);
     Boolean existsByIdentification(String identification);
     List<Client> findByLastnameOrderByLastname(String lastname);
@@ -23,4 +24,5 @@ public interface ClientRepository extends CrudRepository<Client, String>{
     List<ClientAddress> findByAddressCodeLocation(String address);
     List<ClientReference> findByReferenceName(String reference);
     List<ClientPhone> findByPhonePhoneNumber(String phone);
+    List<Client> findByUserUserName(String email);
 }

@@ -1,6 +1,5 @@
 package com.banquito.client.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -14,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
+import com.banquito.client.controller.dto.IdentificationClienRQ;
+import com.banquito.client.controller.dto.UserRQ;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
 import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.controller.mapper.ClientMapper;
 import com.banquito.client.model.Client;
+import com.banquito.client.model.User;
 import com.banquito.client.service.ClientService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +36,9 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping(value = "/{idCliente}")
-    public ResponseEntity<ClientRS> getClientById(@PathVariable("idCliente") String id){
-        Client client = this.clientService.findClientById(id);
+    @GetMapping(value = "/user/client")
+    public ResponseEntity<ClientRS> getClientById(@RequestBody IdentificationClienRQ clientRQ){
+        Client client = this.clientService.findClientById(clientRQ.getIdentification(), clientRQ.getIdentificationType());
         if (client != null){
             return ResponseEntity.ok(ClientMapper.toClientRS(client));
         } else {
@@ -44,9 +46,9 @@ public class ClientController {
         }
     }
 
-    @GetMapping(value = "/client/{idCliente}")
-    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientById(@PathVariable("idCliente") String id){
-        Client client = this.clientService.findClientById(id);
+    @GetMapping(value = "/client")
+    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientById(@RequestBody IdentificationClienRQ clientRQ){
+        Client client = this.clientService.findClientById(clientRQ.getIdentification(), clientRQ.getIdentificationType());
         if (client != null){
             return ResponseEntity.ok(ClientMapper.toPersonalDataClient(client));
         } else {
@@ -94,6 +96,25 @@ public class ClientController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PostMapping(value = "/signup")
+    public ResponseEntity<String> singUp(@RequestBody UserRQ newUser) {
+        try {
+            boolean success = clientService.singUp(ClientMapper.userToClient(newUser));
+            if (success) {
+                return ResponseEntity.ok("User added successfully");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/login")
+    public Object login() {
+        return ResponseEntity.status(200).body("Client logged");
     }
 
 }
