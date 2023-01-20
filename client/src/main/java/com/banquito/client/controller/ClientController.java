@@ -1,6 +1,5 @@
 package com.banquito.client.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
+import com.banquito.client.controller.dto.IdentificationClienRQ;
 import com.banquito.client.controller.dto.UserRQ;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
@@ -36,9 +36,9 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping(value = "/{idCliente}")
-    public ResponseEntity<ClientRS> getClientById(@PathVariable("idCliente") String id){
-        Client client = this.clientService.findClientById(id);
+    @GetMapping(value = "/user/client")
+    public ResponseEntity<ClientRS> getClientById(@RequestBody IdentificationClienRQ clientRQ){
+        Client client = this.clientService.findClientById(clientRQ.getIdentification(), clientRQ.getIdentificationType());
         if (client != null){
             return ResponseEntity.ok(ClientMapper.toClientRS(client));
         } else {
@@ -46,9 +46,9 @@ public class ClientController {
         }
     }
 
-    @GetMapping(value = "/client/{idCliente}")
-    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientById(@PathVariable("idCliente") String id){
-        Client client = this.clientService.findClientById(id);
+    @GetMapping(value = "/client")
+    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientById(@RequestBody IdentificationClienRQ clientRQ){
+        Client client = this.clientService.findClientById(clientRQ.getIdentification(), clientRQ.getIdentificationType());
         if (client != null){
             return ResponseEntity.ok(ClientMapper.toPersonalDataClient(client));
         } else {
@@ -96,19 +96,12 @@ public class ClientController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
-    @RequestMapping(value = "", method = RequestMethod.PUT)
-    public Object update() {
-        return ResponseEntity.status(200).body("Client created");
     }
 
-    @RequestMapping(value = "/singup", method = RequestMethod.POST)
+    @PostMapping(value = "/signup")
     public ResponseEntity<String> singUp(@RequestBody UserRQ newUser) {
         try {
-            String typeIdentification = newUser.getTypeIdentification();
-            String identification = newUser.getIdentification();
-            String email = newUser.getEmail();
-            User user = newUser.getUser();  
-            boolean success = clientService.singUp(typeIdentification, identification, email, user);
+            boolean success = clientService.singUp(ClientMapper.userToClient(newUser));
             if (success) {
                 return ResponseEntity.ok("User added successfully");
             } else {
@@ -119,9 +112,9 @@ public class ClientController {
         }
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     public Object login() {
-        return ResponseEntity.status(200).body("Client web created");
+        return ResponseEntity.status(200).body("Client logged");
     }
 
 }

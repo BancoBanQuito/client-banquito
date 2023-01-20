@@ -61,7 +61,7 @@ public class Client {
     private List<ClientReference> reference;
     private List<ClientPhone> phone;
     private List<ClientAddress> address;
-    private List<User> user;
+    User user;
     private List<ClientSegment> segment;
 
     @Version

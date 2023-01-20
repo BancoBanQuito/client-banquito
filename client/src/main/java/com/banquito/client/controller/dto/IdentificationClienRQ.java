@@ -1,19 +1,14 @@
 package com.banquito.client.controller.dto;
 
 import java.io.Serializable;
-
-import com.banquito.client.model.User;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class UserRQ implements Serializable{
-    
-    private String identificationType;
+public class IdentificationClienRQ implements Serializable{
     private String identification;
-    private String email;
-    User user;
-
+    private String identificationType;
 }
