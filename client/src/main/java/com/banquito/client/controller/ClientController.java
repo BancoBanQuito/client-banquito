@@ -103,7 +103,6 @@ public class ClientController {
             this.clientService.updatePhone(phoneRQ.getIdentificationType(), phoneRQ.getIdentification(),phoneRQ.getPhone());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.internalServerError().build();
         }
     }
