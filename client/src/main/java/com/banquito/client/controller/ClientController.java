@@ -17,6 +17,7 @@ import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
 import com.banquito.client.controller.dto.UpdateClientRQ;
+import com.banquito.client.controller.dto.UpdatePhoneRQ;
 import com.banquito.client.controller.mapper.ClientMapper;
 import com.banquito.client.model.Client;
 import com.banquito.client.service.ClientService;
@@ -92,6 +93,17 @@ public class ClientController {
             this.clientService.updateClient(id, ClientMapper.toClient(clientRQ));
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping(value = "/client/phone")
+    public ResponseEntity<String> updateClientPhone(@RequestBody UpdatePhoneRQ phoneRQ){
+        try {
+            this.clientService.updatePhone(phoneRQ.getIdentificationType(), phoneRQ.getIdentification(),phoneRQ.getPhone());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.internalServerError().build();
         }
     }
