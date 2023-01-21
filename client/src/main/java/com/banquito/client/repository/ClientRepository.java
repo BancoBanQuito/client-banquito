@@ -16,6 +16,7 @@ public interface ClientRepository extends CrudRepository<Client, String>{
 
     Client findByIdentificationAndIdentificationType(String identification, String identificationType);
     Client findByIdentification(String identification);
+    Client findByEmail(String email);
     Boolean existsByIdentification(String identification);
     List<Client> findByLastnameOrderByLastname(String lastname);
     List<Client> findByLastnameLikeOrderByLastname(String lastname);
