@@ -45,16 +45,6 @@ public class ClientMapper {
             .build();
     }
 
-    public static Client toClient(ClientRQ client){
-        return Client.builder()
-            .email(client.getEmail())
-            .gender(client.getGender())
-            .career(client.getCareer())
-            .phone(client.getPhone())
-            .address(client.getAddress())
-            .build();
-    }
-
     public static Client identificationstoClient(IdentificationClienRQ client){
         return Client.builder()
             .identification(client.getIdentification())

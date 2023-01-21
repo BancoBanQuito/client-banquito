@@ -13,10 +13,12 @@ import lombok.Data;
 @Builder
 public class ClientRQ implements Serializable {
 
+    private String identificationType;
+    private String identification;
     private String email;
     private String gender;
     private String career;
 
-    private List<ClientAddress> address;
-    private List<ClientPhone> phone;
+    private ClientAddress address;
+    private ClientPhone phone;
 }

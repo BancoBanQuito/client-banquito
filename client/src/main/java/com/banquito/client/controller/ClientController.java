@@ -18,6 +18,7 @@ import com.banquito.client.controller.dto.UserRQ;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
 import com.banquito.client.controller.dto.UpdateClientRQ;
+import com.banquito.client.controller.dto.UserLogin;
 import com.banquito.client.controller.mapper.ClientMapper;
 import com.banquito.client.model.Client;
 import com.banquito.client.model.User;
@@ -91,7 +92,7 @@ public class ClientController {
     @PutMapping(value = "/{idCliente}")
     public ResponseEntity<String> updateClient(@PathVariable("idCliente") String id, @RequestBody ClientRQ clientRQ){
         try {
-            this.clientService.updateClient(id, ClientMapper.toClient(clientRQ));
+            this.clientService.updateClient(id, clientRQ);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -113,8 +114,16 @@ public class ClientController {
     }
 
     @PostMapping(value = "/login")
-    public Object login() {
-        return ResponseEntity.status(200).body("Client logged");
+    public Object login(@RequestBody UserLogin user) {
+        try {
+            boolean success = clientService.login(user);
+            if (success) {
+                return ResponseEntity.status(200).body("Client logged");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
-
 }
