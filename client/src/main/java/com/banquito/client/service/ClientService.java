@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.banquito.client.controller.dto.UpdateClientRQ;
+import com.banquito.client.controller.dto.UserLogin;
 import com.banquito.client.model.Client;
 import com.banquito.client.model.ClientAddress;
 import com.banquito.client.model.ClientPhone;
@@ -246,6 +247,30 @@ public class ClientService {
         LocalDate now = LocalDate.now();
         Period age = Period.between(birthdate, now);
         return age.getYears() > 18;
+    }
+
+    public boolean login(UserLogin user){
+        Client registeredClient = this.clientRepository.findByEmail(user.getUserName());
+        System.out.println(registeredClient);
+        if(
+            //registeredClient != null && registeredClient.getEmail().equals(user.getUserName())
+            registeredClient.getUser().getUserName().equals(user.getUserName())
+            && registeredClient.getUser().getPassword().equals(user.getPassword())){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean singUp(Client client){
+        Client registeredClient = this.clientRepository.findByIdentificationTypeAndIdentification(client.getIdentificationType(), client.getIdentification());
+        if(registeredClient != null && registeredClient.getEmail().equals(client.getUser().getUserName()) 
+            && registeredClient.getUser() == null
+        ){
+            registeredClient.setUser(client.getUser());
+            this.clientRepository.save(registeredClient);
+            return true;
+        }
+        return false;
     }
 
 }

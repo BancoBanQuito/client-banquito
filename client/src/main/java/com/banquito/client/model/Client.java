@@ -53,6 +53,8 @@ public class Client {
     private String workStatus;
     private Date creationDate;
 
+    private User user;
+
     private List<ClientRelationship> relationship;
     private List<ClientReference> reference;
     private List<ClientPhone> phone;

@@ -21,6 +21,8 @@ import com.banquito.client.controller.dto.UpdateAdressRQ;
 import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.controller.dto.UpdatePhoneRQ;
 import com.banquito.client.controller.dto.UpdateReferenceRQ;
+import com.banquito.client.controller.dto.UserLogin;
+import com.banquito.client.controller.dto.UserRQ;
 import com.banquito.client.controller.mapper.ClientMapper;
 import com.banquito.client.model.Client;
 import com.banquito.client.service.ClientService;
@@ -145,4 +147,35 @@ public class ClientController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PostMapping(value = "/signup")
+    public ResponseEntity<String> singUp(@RequestBody UserRQ newUser) {
+        try {
+            boolean success = clientService.singUp(ClientMapper.userToClient(newUser));
+            if (success) {
+                return ResponseEntity.ok("User added successfully");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            System.out.print(e);
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/login")
+    public Object login(@RequestBody UserLogin user) {
+        try {
+            boolean success = clientService.login(user);
+            if (success) {
+                return ResponseEntity.status(200).body("Client logged");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    
 }
