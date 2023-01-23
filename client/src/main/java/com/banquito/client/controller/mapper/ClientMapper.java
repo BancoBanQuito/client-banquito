@@ -4,6 +4,7 @@ import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
+import com.banquito.client.controller.dto.SignatureRQ;
 import com.banquito.client.model.Client;
 
 public class ClientMapper {
@@ -96,6 +97,16 @@ public class ClientMapper {
         .nationality(client.getNationality())
         .phone(client.getPhone())
         .address(client.getAddress())
+        .build();
+    }
+
+    public static SignatureRQ toSignature(Client client){
+        return SignatureRQ.builder()
+        .typeIndentification(client.getIdentificationType())
+        .identification(client.getIdentification())
+        .name(client.getFirstname())
+        .lastName(client.getLastname())
+        .signature(client.getSignature())
         .build();
     }
 }

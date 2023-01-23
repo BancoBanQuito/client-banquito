@@ -37,6 +37,14 @@ public class ClientService {
         return this.clientRepository.findByIdentification(id);
     }
 
+    public Client findClientByTypeIdAndID(String typeId, String id){
+        Boolean clientExists = this.clientRepository.existsByIdentification(id);
+        if (!clientExists){
+            throw new RuntimeException("The client does not exist");
+        }
+        return this.clientRepository.findByIdentificationTypeAndIdentification(typeId, id);        
+    }
+
     @Transactional
     public void createClient(Client client){
         Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
