@@ -3,6 +3,7 @@ package com.banquito.client.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
+import com.banquito.client.controller.dto.SignatureRQ;
 import com.banquito.client.controller.dto.UpdateAdressRQ;
 import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.controller.dto.UpdatePhoneRQ;
@@ -25,6 +27,10 @@ import com.banquito.client.service.ClientService;
 
 @RestController
 @RequestMapping("/api/client")
+@CrossOrigin(origins = "*", methods = { org.springframework.web.bind.annotation.RequestMethod.GET,
+    org.springframework.web.bind.annotation.RequestMethod.POST,
+    org.springframework.web.bind.annotation.RequestMethod.PUT,
+    org.springframework.web.bind.annotation.RequestMethod.DELETE })
 public class ClientController {
 
     private final ClientService clientService;
@@ -58,6 +64,17 @@ public class ClientController {
         List<Client> client = this.clientService.findClientBySimilarLastname(lastname);
         if (client != null) {
             return ResponseEntity.ok(client);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "signature/{typeIdentification}/{identification}")
+    public ResponseEntity<SignatureRQ> getSignature(@PathVariable("typeIdentification") String typeIdentification,
+                                                    @PathVariable("identification") String identification){
+        Client client = this.clientService.findClientByTypeIdAndID(typeIdentification,identification);
+        if (client != null){
+            return ResponseEntity.ok(ClientMapper.toSignature(client));
         } else {
             return ResponseEntity.notFound().build();
         }
