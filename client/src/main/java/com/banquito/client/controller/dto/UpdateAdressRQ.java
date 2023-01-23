@@ -12,5 +12,5 @@ public class UpdateAdressRQ {
     private String identificationType;
     private String identification;
 
-    private ClientAddress adress;
+    private ClientAddress address;
 }

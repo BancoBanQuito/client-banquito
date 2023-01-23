@@ -96,7 +96,7 @@ public class ClientController {
         }
     }
 
-    @PutMapping(value = "/client/phone")
+    @PutMapping(value = "/phone")
     public ResponseEntity<String> updateClientPhone(@RequestBody UpdatePhoneRQ phoneRQ) {
         try {
             this.clientService.updatePhone(phoneRQ.getIdentificationType(), phoneRQ.getIdentification(),
@@ -107,7 +107,7 @@ public class ClientController {
         }
     }
 
-    @PutMapping(value = "/client/reference")
+    @PutMapping(value = "/reference")
     public ResponseEntity<String> updateClientReference(@RequestBody UpdateReferenceRQ referenceRQ) {
         try {
             this.clientService.updateReference(referenceRQ.getIdentificationType(), referenceRQ.getIdentification(),
@@ -118,11 +118,11 @@ public class ClientController {
         }
     }
 
-    @PutMapping(value = "/client/adress")
+    @PutMapping(value = "/adress")
     public ResponseEntity<String> updateClientAdress(@RequestBody UpdateAdressRQ adressRQ) {
         try {
             this.clientService.updateAdress(adressRQ.getIdentificationType(), adressRQ.getIdentification(),
-                    adressRQ.getAdress());
+                    adressRQ.getAddress());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
