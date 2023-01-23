@@ -1,6 +1,5 @@
 package com.banquito.client.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -16,29 +15,28 @@ import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
 import com.banquito.client.controller.dto.PersonalClientDataRS;
+import com.banquito.client.controller.dto.UpdateAdressRQ;
 import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.controller.dto.UpdatePhoneRQ;
+import com.banquito.client.controller.dto.UpdateReferenceRQ;
 import com.banquito.client.controller.mapper.ClientMapper;
 import com.banquito.client.model.Client;
 import com.banquito.client.service.ClientService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @RequestMapping("/api/client")
 public class ClientController {
 
     private final ClientService clientService;
 
-    public ClientController(ClientService clientService){
+    public ClientController(ClientService clientService) {
         this.clientService = clientService;
     }
 
     @GetMapping(value = "/{idCliente}")
-    public ResponseEntity<ClientRS> getClientById(@PathVariable("idCliente") String id){
+    public ResponseEntity<ClientRS> getClientById(@PathVariable("idCliente") String id) {
         Client client = this.clientService.findClientById(id);
-        if (client != null){
+        if (client != null) {
             return ResponseEntity.ok(ClientMapper.toClientRS(client));
         } else {
             return ResponseEntity.notFound().build();
@@ -46,9 +44,9 @@ public class ClientController {
     }
 
     @GetMapping(value = "/client/{idCliente}")
-    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientById(@PathVariable("idCliente") String id){
+    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientById(@PathVariable("idCliente") String id) {
         Client client = this.clientService.findClientById(id);
-        if (client != null){
+        if (client != null) {
             return ResponseEntity.ok(ClientMapper.toPersonalDataClient(client));
         } else {
             return ResponseEntity.notFound().build();
@@ -56,9 +54,9 @@ public class ClientController {
     }
 
     @GetMapping(value = "/clients/{lastname}")
-    public ResponseEntity<List<Client>> getClientByLastName(@PathVariable("lastname") String lastname){
+    public ResponseEntity<List<Client>> getClientByLastName(@PathVariable("lastname") String lastname) {
         List<Client> client = this.clientService.findClientBySimilarLastname(lastname);
-        if (client != null){
+        if (client != null) {
             return ResponseEntity.ok(client);
         } else {
             return ResponseEntity.notFound().build();
@@ -66,7 +64,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createClient(@RequestBody NewClientRQ clientRQ){
+    public ResponseEntity<String> createClient(@RequestBody NewClientRQ clientRQ) {
         try {
             this.clientService.createClient(ClientMapper.toNewClient(clientRQ));
             return ResponseEntity.ok().build();
@@ -77,7 +75,8 @@ public class ClientController {
     }
 
     @PutMapping(value = "/user/{idCliente}")
-    public ResponseEntity<String> updateClientLikeBankUser(@PathVariable("idCliente") String id, @RequestBody UpdateClientRQ clientRQ){
+    public ResponseEntity<String> updateClientLikeBankUser(@PathVariable("idCliente") String id,
+            @RequestBody UpdateClientRQ clientRQ) {
         try {
             this.clientService.updateClientLikeBankUser(id, clientRQ);
             return ResponseEntity.ok().build();
@@ -88,7 +87,7 @@ public class ClientController {
     }
 
     @PutMapping(value = "/{idCliente}")
-    public ResponseEntity<String> updateClient(@PathVariable("idCliente") String id, @RequestBody ClientRQ clientRQ){
+    public ResponseEntity<String> updateClient(@PathVariable("idCliente") String id, @RequestBody ClientRQ clientRQ) {
         try {
             this.clientService.updateClient(id, ClientMapper.toClient(clientRQ));
             return ResponseEntity.ok().build();
@@ -97,14 +96,36 @@ public class ClientController {
         }
     }
 
-    @PutMapping(value = "/client/phone")
-    public ResponseEntity<String> updateClientPhone(@RequestBody UpdatePhoneRQ phoneRQ){
+    @PutMapping(value = "/phone")
+    public ResponseEntity<String> updateClientPhone(@RequestBody UpdatePhoneRQ phoneRQ) {
         try {
-            this.clientService.updatePhone(phoneRQ.getIdentificationType(), phoneRQ.getIdentification(),phoneRQ.getPhone());
+            this.clientService.updatePhone(phoneRQ.getIdentificationType(), phoneRQ.getIdentification(),
+                    phoneRQ.getPhone());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
+    @PutMapping(value = "/reference")
+    public ResponseEntity<String> updateClientReference(@RequestBody UpdateReferenceRQ referenceRQ) {
+        try {
+            this.clientService.updateReference(referenceRQ.getIdentificationType(), referenceRQ.getIdentification(),
+                    referenceRQ.getReference());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping(value = "/adress")
+    public ResponseEntity<String> updateClientAdress(@RequestBody UpdateAdressRQ adressRQ) {
+        try {
+            this.clientService.updateAdress(adressRQ.getIdentificationType(), adressRQ.getIdentification(),
+                    adressRQ.getAddress());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
