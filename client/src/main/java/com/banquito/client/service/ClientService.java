@@ -170,6 +170,12 @@ public class ClientService {
     }
 
     @Transactional
+    public Client findClientByEmail(String email) {
+        return this.clientRepository.findByEmail(email);
+    }
+
+
+    @Transactional
     public void updatePhone(String identificationType, String identification, ClientPhone phone) {
 
         Boolean clientExists = this.clientRepository.existsByIdentificationTypeAndIdentification(identificationType,

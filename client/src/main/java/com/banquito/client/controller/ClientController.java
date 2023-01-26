@@ -41,9 +41,10 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping(value = "/{idCliente}")
-    public ResponseEntity<ClientRS> getClientById(@PathVariable("idCliente") String id) {
-        Client client = this.clientService.findClientById(id);
+    @GetMapping(value = "/{idCliente}/{typeIdentification}")
+    public ResponseEntity<ClientRS> getClientById(@PathVariable("idCliente") String id,
+                                                    @PathVariable("typeIdentification") String typeIdentification) {
+        Client client = this.clientService.findClientByTypeIdAndID(typeIdentification, id);
         if (client != null) {
             return ResponseEntity.ok(ClientMapper.toClientRS(client));
         } else {
@@ -177,5 +178,15 @@ public class ClientController {
         }
     }
 
-    
+    @GetMapping(value = "/client/email/{email}")
+    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientByEmail(@PathVariable("email") String email) {
+        Client client = this.clientService.findClientByEmail(email);
+        if (client != null) {
+            return ResponseEntity.ok(ClientMapper.toPersonalDataClient(client));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }
