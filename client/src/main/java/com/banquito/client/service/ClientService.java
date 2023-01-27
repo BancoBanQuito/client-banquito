@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.banquito.client.controller.dto.PersonalClientDataRSRQ;
 import com.banquito.client.controller.dto.UpdateClientRQ;
 import com.banquito.client.controller.dto.UserLogin;
 import com.banquito.client.model.Client;
@@ -237,13 +238,40 @@ public class ClientService {
         }
 
     }
-    /*
-     * public boolean isLegal(Date date) {
-     * Date actualDate = new Date();
-     * int age = actualDate.getYear() - date.getYear();
-     * return age > 18;
-     * }
-     */
+
+    public void updatePersoanlDataClient(PersonalClientDataRSRQ clientRQ){
+        Boolean clientExists = this.clientRepository.existsByIdentificationTypeAndIdentification(clientRQ.getIdentificationType(),
+                            clientRQ.getIdentification());
+        try {        
+            if (!clientExists) {
+                throw new RuntimeException("The client does not exist");
+            }
+            Client clientToUpdate = this.clientRepository.findByIdentificationTypeAndIdentification(clientRQ.getIdentificationType(),
+                                    clientRQ.getIdentification());
+            clientToUpdate.setGender(clientRQ.getGender());
+            clientToUpdate.setCareer(clientRQ.getCareer());
+            
+            Optional<ClientPhone> phoneToUpdate = clientToUpdate.getPhone().stream()
+                .filter(p -> p.equals(clientRQ.getPhone()))
+                .findFirst();
+            if(!phoneToUpdate.isPresent()){
+                clientToUpdate.getPhone().add(clientRQ.getPhone());
+            }
+
+            Optional<ClientAddress> addressToUpdate = clientToUpdate.getAddress().stream()
+                .filter(p -> p.equals(clientRQ.getAddress()))
+                .findFirst();
+            if(!addressToUpdate.isPresent()){
+                clientToUpdate.getAddress().add(clientRQ.getAddress());
+            }
+
+            this.clientRepository.save(clientToUpdate);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error updatePersoanlDataClient "+e);
+        }
+
+    }
 
     public boolean isLegal(Date date) {
         if (date == null) {

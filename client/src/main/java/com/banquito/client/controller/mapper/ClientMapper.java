@@ -3,7 +3,7 @@ package com.banquito.client.controller.mapper;
 import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
-import com.banquito.client.controller.dto.PersonalClientDataRS;
+import com.banquito.client.controller.dto.PersonalClientDataRSRQ;
 import com.banquito.client.controller.dto.SignatureRQ;
 import com.banquito.client.controller.dto.UserRQ;
 import com.banquito.client.model.Client;
@@ -81,23 +81,23 @@ public class ClientMapper {
                 .tinDocument(client.getTinDocument())
                 .workStatus(client.getWorkStatus())
 
-                .phone(client.getPhone())
-                .address(client.getAddress())
-                .reference(client.getReference())
-                .relationship(client.getRelationship())
+                .phone(client.getPhone().get(client.getPhone().size()-1))
+                .address(client.getAddress().get(client.getAddress().size()-1))
+                .reference(client.getReference().get(client.getReference().size()-1))
+                .relationship(client.getRelationship().get(client.getRelationship().size()-1))
                 .build();
     }
 
-    public static PersonalClientDataRS toPersonalDataClient(Client client) {
-        return PersonalClientDataRS.builder()
+    public static PersonalClientDataRSRQ toPersonalDataClient(Client client) {
+        return PersonalClientDataRSRQ.builder()
                 .identificationType(client.getIdentificationType())
                 .identification(client.getIdentification())
                 .fullname(client.getFullname())
                 .email(client.getEmail())
                 .gender(client.getGender())
-                .nationality(client.getNationality())
-                .phone(client.getPhone())
-                .address(client.getAddress())
+                .career(client.getCareer())
+                .phone(client.getPhone().get(client.getPhone().size()-1))
+                .address(client.getAddress().get(client.getAddress().size()-1))
                 .build();
     }
 
