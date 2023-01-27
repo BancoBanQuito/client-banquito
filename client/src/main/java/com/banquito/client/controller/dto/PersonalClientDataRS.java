@@ -18,9 +18,9 @@ public class PersonalClientDataRS implements Serializable{
     private String fullname;
     private String email;
     private String gender;
-    private String nationality;
+    private String career;
 
-    private List<ClientPhone> phone;
-    private List<ClientAddress> address;
+    private ClientPhone phone;
+    private ClientAddress address;
 
 }

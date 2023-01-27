@@ -95,9 +95,9 @@ public class ClientMapper {
                 .fullname(client.getFullname())
                 .email(client.getEmail())
                 .gender(client.getGender())
-                .nationality(client.getNationality())
-                .phone(client.getPhone())
-                .address(client.getAddress())
+                .career(client.getCareer())
+                .phone(client.getPhone().get(client.getPhone().size()-1))
+                .address(client.getAddress().get(client.getAddress().size()-1))
                 .build();
     }
 

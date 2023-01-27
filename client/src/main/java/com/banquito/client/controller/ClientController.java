@@ -178,7 +178,7 @@ public class ClientController {
         }
     }
 
-    @GetMapping(value = "/client/email/{email}")
+    @GetMapping(value = "/email/{email}")
     public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientByEmail(@PathVariable("email") String email) {
         Client client = this.clientService.findClientByEmail(email);
         if (client != null) {
