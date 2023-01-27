@@ -81,10 +81,10 @@ public class ClientMapper {
                 .tinDocument(client.getTinDocument())
                 .workStatus(client.getWorkStatus())
 
-                .phone(client.getPhone())
-                .address(client.getAddress())
-                .reference(client.getReference())
-                .relationship(client.getRelationship())
+                .phone(client.getPhone().get(client.getPhone().size()-1))
+                .address(client.getAddress().get(client.getAddress().size()-1))
+                .reference(client.getReference().get(client.getReference().size()-1))
+                .relationship(client.getRelationship().get(client.getRelationship().size()-1))
                 .build();
     }
 
