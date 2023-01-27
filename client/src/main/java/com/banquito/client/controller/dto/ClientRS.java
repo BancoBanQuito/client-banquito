@@ -50,6 +50,6 @@ public class ClientRS implements Serializable {
     private List<ClientReference> reference;
     private List<ClientPhone> phone;
     private List<ClientAddress> address;
-    private List<ClientSegment> segment;
+    // private List<ClientSegment> segment;
 
 }

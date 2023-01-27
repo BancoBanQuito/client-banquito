@@ -47,6 +47,7 @@ public class ClientService {
     @Transactional
     public void createClient(Client client) {
         Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
+        
         if (clientExists) {
             throw new RuntimeException("The client already exists");
         }

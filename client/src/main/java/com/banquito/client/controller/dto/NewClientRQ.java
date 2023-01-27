@@ -46,5 +46,5 @@ public class NewClientRQ implements Serializable {
     private List<ClientPhone> phone;
     private List<ClientReference> reference;
     private List<ClientRelationship> relationship;
-    private List<ClientSegment> segment;
+    // private List<ClientSegment> segment;
 }

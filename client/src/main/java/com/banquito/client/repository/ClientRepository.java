@@ -30,7 +30,7 @@ public interface ClientRepository extends CrudRepository<Client, String> {
 
     List<Client> findByStatusOrderByStatus(String status);
 
-    List<ClientSegment> findBySegmentCode(String segment);
+    // List<ClientSegment> findBySegmentCode(String segment);
 
     List<ClientAddress> findByAddressCodeLocation(String address);
 
