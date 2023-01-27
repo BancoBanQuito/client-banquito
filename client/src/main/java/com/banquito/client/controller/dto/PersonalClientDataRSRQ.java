@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class PersonalClientDataRS implements Serializable{
+public class PersonalClientDataRSRQ implements Serializable{
 
     private String identificationType;
     private String identification;

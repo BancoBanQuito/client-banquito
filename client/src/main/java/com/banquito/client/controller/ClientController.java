@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
-import com.banquito.client.controller.dto.PersonalClientDataRS;
+import com.banquito.client.controller.dto.PersonalClientDataRSRQ;
 import com.banquito.client.controller.dto.SignatureRQ;
 import com.banquito.client.controller.dto.UpdateAdressRQ;
 import com.banquito.client.controller.dto.UpdateClientRQ;
@@ -53,7 +53,7 @@ public class ClientController {
     }
 
     @GetMapping(value = "/client/{idCliente}")
-    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientById(@PathVariable("idCliente") String id) {
+    public ResponseEntity<PersonalClientDataRSRQ> getPersoanlDataClientById(@PathVariable("idCliente") String id) {
         Client client = this.clientService.findClientById(id);
         if (client != null) {
             return ResponseEntity.ok(ClientMapper.toPersonalDataClient(client));
@@ -179,7 +179,7 @@ public class ClientController {
     }
 
     @GetMapping(value = "/email/{email}")
-    public ResponseEntity<PersonalClientDataRS> getPersoanlDataClientByEmail(@PathVariable("email") String email) {
+    public ResponseEntity<PersonalClientDataRSRQ> getPersonalDataClientByEmail(@PathVariable("email") String email) {
         Client client = this.clientService.findClientByEmail(email);
         if (client != null) {
             return ResponseEntity.ok(ClientMapper.toPersonalDataClient(client));
@@ -188,5 +188,13 @@ public class ClientController {
         }
     }
 
-
+    @PutMapping(value = "/personal-data")
+    public ResponseEntity<String> updatePersonalDataClient(@RequestBody PersonalClientDataRSRQ clientRQ) {
+        try {
+            this.clientService.updatePersoanlDataClient(clientRQ);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

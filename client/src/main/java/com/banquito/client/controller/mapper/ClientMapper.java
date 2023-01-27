@@ -3,7 +3,7 @@ package com.banquito.client.controller.mapper;
 import com.banquito.client.controller.dto.ClientRQ;
 import com.banquito.client.controller.dto.ClientRS;
 import com.banquito.client.controller.dto.NewClientRQ;
-import com.banquito.client.controller.dto.PersonalClientDataRS;
+import com.banquito.client.controller.dto.PersonalClientDataRSRQ;
 import com.banquito.client.controller.dto.SignatureRQ;
 import com.banquito.client.controller.dto.UserRQ;
 import com.banquito.client.model.Client;
@@ -88,8 +88,8 @@ public class ClientMapper {
                 .build();
     }
 
-    public static PersonalClientDataRS toPersonalDataClient(Client client) {
-        return PersonalClientDataRS.builder()
+    public static PersonalClientDataRSRQ toPersonalDataClient(Client client) {
+        return PersonalClientDataRSRQ.builder()
                 .identificationType(client.getIdentificationType())
                 .identification(client.getIdentification())
                 .fullname(client.getFullname())
