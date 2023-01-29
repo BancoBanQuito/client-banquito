@@ -42,9 +42,9 @@ public class NewClientRQ implements Serializable {
     private String tinDocument;
     private String workStatus;
 
-    private List<ClientAddress> address;
-    private List<ClientPhone> phone;
-    private List<ClientReference> reference;
-    private List<ClientRelationship> relationship;
-    // private List<ClientSegment> segment;
+    private ClientAddress address;
+    private ClientPhone phone;
+    private ClientReference reference;
+    private ClientRelationship relationship;
+    private ClientSegment segment;
 }

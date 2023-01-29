@@ -88,30 +88,9 @@ public class ClientService {
         clientToUpdate.setSignature(client.getSignature());
         clientToUpdate.setTaxPaymentPlace(client.getTaxPaymentPlace());
         clientToUpdate.setCreationDate(new Date());
-
-        Optional<ClientAddress> adressToUpdate = clientToUpdate.getAddress().stream()
-                .filter(p -> p.equals(client.getAddress()))
-                .findFirst();
-
-        if (!adressToUpdate.isPresent()) {
-            clientToUpdate.getAddress().add(client.getAddress());
-        }
-
-        Optional<ClientPhone> phoneToUpdate = clientToUpdate.getPhone().stream()
-                .filter(p -> p.equals(client.getPhone()))
-                .findFirst();
-
-        if (!phoneToUpdate.isPresent()) {
-            clientToUpdate.getPhone().add(client.getPhone());
-        }
-
-        Optional<ClientReference> referenceToUpdate = clientToUpdate.getReference().stream()
-                .filter(p -> p.equals(client.getReference()))
-                .findFirst();
-
-        if (!referenceToUpdate.isPresent()) {
-            clientToUpdate.getReference().add(client.getReference());
-        }
+        clientToUpdate.setAddress(client.getAddress());
+        clientToUpdate.setPhone(client.getPhone());
+        clientToUpdate.setReference(client.getReference());
 
         this.clientRepository.save(clientToUpdate);
     }
@@ -126,23 +105,7 @@ public class ClientService {
 
         clientToUpdate.setEmail(client.getEmail());
         clientToUpdate.setGender(client.getGender());
-
-        List<ClientAddress> adressToUpdate = this.clientRepository.findByAddressCodeLocation(
-                clientToUpdate.getAddress().get(0).getCodeLocation());
-        if (adressToUpdate.get(0).getLatitude().equals(client.getAddress().get(0).getLatitude()) &&
-                adressToUpdate.get(0).getLongitude().equals(client.getAddress().get(0).getLongitude()) &&
-                adressToUpdate.get(0).getLineOne().equals(client.getAddress().get(0).getLineOne()) &&
-                adressToUpdate.get(0).getLineTwo().equals(client.getAddress().get(0).getLineTwo())) {
-            throw new RuntimeException("Adress " + adressToUpdate.get(0).getCodeLocation() + " already exist");
-        }
         clientToUpdate.setAddress(client.getAddress());
-
-        List<ClientPhone> phoneToUpdate = this.clientRepository.findByPhonePhoneNumber(
-                clientToUpdate.getPhone().get(0).getPhoneNumber());
-        if (phoneToUpdate.get(0).getPhoneNumber().equals(client.getPhone().get(0).getPhoneNumber()) &&
-                phoneToUpdate.get(0).getPhoneType().equals(client.getPhone().get(0).getPhoneType())) {
-            throw new RuntimeException("The phone " + phoneToUpdate.get(0).getPhoneNumber() + " already exist");
-        }
         clientToUpdate.setPhone(client.getPhone());
 
         this.clientRepository.save(clientToUpdate);
@@ -187,14 +150,8 @@ public class ClientService {
         }
         Client clientToUpdate = this.clientRepository.findByIdentificationTypeAndIdentification(identificationType,
                 identification);
-        Optional<ClientPhone> phoneToUpdate = clientToUpdate.getPhone().stream()
-                .filter(p -> p.equals(phone))
-                .findFirst();
-
-        if (!phoneToUpdate.isPresent()) {
-            clientToUpdate.getPhone().add(phone);
+            clientToUpdate.setPhone(phone);
             this.clientRepository.save(clientToUpdate);
-        }
 
     }
 
@@ -208,15 +165,9 @@ public class ClientService {
         }
         Client clientToUpdate = this.clientRepository.findByIdentificationTypeAndIdentification(identificationType,
                 identification);
-        Optional<ClientAddress> adressToUpdate = clientToUpdate.getAddress().stream()
-                .filter(p -> p.equals(adress))
-                .findFirst();
-
-        if (!adressToUpdate.isPresent()) {
-            clientToUpdate.getAddress().add(adress);
-            this.clientRepository.save(clientToUpdate);
-        }
-
+        
+        clientToUpdate.setAddress(adress);
+        this.clientRepository.save(clientToUpdate);
     }
 
     @Transactional
@@ -229,14 +180,8 @@ public class ClientService {
         }
         Client clientToUpdate = this.clientRepository.findByIdentificationTypeAndIdentification(identificationType,
                 identification);
-        Optional<ClientReference> referenceToUpdate = clientToUpdate.getReference().stream()
-                .filter(p -> p.equals(reference))
-                .findFirst();
-
-        if (!referenceToUpdate.isPresent()) {
-            clientToUpdate.getReference().add(reference);
+            clientToUpdate.setReference(reference);
             this.clientRepository.save(clientToUpdate);
-        }
 
     }
 
@@ -251,20 +196,8 @@ public class ClientService {
                                     clientRQ.getIdentification());
             clientToUpdate.setGender(clientRQ.getGender());
             clientToUpdate.setCareer(clientRQ.getCareer());
-            
-            Optional<ClientPhone> phoneToUpdate = clientToUpdate.getPhone().stream()
-                .filter(p -> p.equals(clientRQ.getPhone()))
-                .findFirst();
-            if(!phoneToUpdate.isPresent()){
-                clientToUpdate.getPhone().add(clientRQ.getPhone());
-            }
-
-            Optional<ClientAddress> addressToUpdate = clientToUpdate.getAddress().stream()
-                .filter(p -> p.equals(clientRQ.getAddress()))
-                .findFirst();
-            if(!addressToUpdate.isPresent()){
-                clientToUpdate.getAddress().add(clientRQ.getAddress());
-            }
+            clientToUpdate.setPhone(clientRQ.getPhone());
+            clientToUpdate.setAddress(clientRQ.getAddress());
 
             this.clientRepository.save(clientToUpdate);
 
@@ -288,7 +221,6 @@ public class ClientService {
         Client registeredClient = this.clientRepository.findByEmail(user.getUserName());
         System.out.println(registeredClient);
         if(
-            //registeredClient != null && registeredClient.getEmail().equals(user.getUserName())
             registeredClient.getUser().getUserName().equals(user.getUserName())
             && registeredClient.getUser().getPassword().equals(user.getPassword())){
             return true;
@@ -298,8 +230,7 @@ public class ClientService {
 
     public boolean singUp(Client client){
         Client registeredClient = this.clientRepository.findByIdentificationTypeAndIdentification(client.getIdentificationType(), client.getIdentification());
-        if(registeredClient != null && registeredClient.getEmail().equals(client.getUser().getUserName()) 
-            && registeredClient.getUser() == null
+        if(registeredClient != null && registeredClient.getUser() == null
         ){
             registeredClient.setUser(client.getUser());
             this.clientRepository.save(registeredClient);

@@ -46,10 +46,10 @@ public class ClientRS implements Serializable {
     private String workStatus;
     private Date creationDate;
 
-    private List<ClientRelationship> relationship;
-    private List<ClientReference> reference;
-    private List<ClientPhone> phone;
-    private List<ClientAddress> address;
-    // private List<ClientSegment> segment;
+    private ClientRelationship relationship;
+    private ClientReference reference;
+    private ClientPhone phone;
+    private ClientAddress address;
+    private ClientSegment segment;
 
 }

@@ -55,11 +55,11 @@ public class Client {
 
     private User user;
 
-    private List<ClientRelationship> relationship;
-    private List<ClientReference> reference;
-    private List<ClientPhone> phone;
-    private List<ClientAddress> address;
-    // private List<ClientSegment> segment;
+    private ClientRelationship relationship;
+    private ClientReference reference;
+    private ClientPhone phone;
+    private ClientAddress address;
+    private ClientSegment segment;
 
     @Version
     private Long version;

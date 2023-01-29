@@ -17,6 +17,6 @@ public class ClientRQ implements Serializable {
     private String gender;
     private String career;
 
-    private List<ClientAddress> address;
-    private List<ClientPhone> phone;
+    private ClientAddress address;
+    private ClientPhone phone;
 }
