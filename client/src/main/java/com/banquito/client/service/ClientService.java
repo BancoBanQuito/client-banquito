@@ -125,7 +125,7 @@ public class ClientService {
     }
 
     @Transactional
-    public Client getTypeIdentificationAndIdentification(String identification) {
+    public Client getidentificationTypeAndIdentification(String identification) {
         return this.clientRepository.findByIdentification(identification);
     }
 

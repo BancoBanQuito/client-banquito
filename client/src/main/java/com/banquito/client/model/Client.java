@@ -1,7 +1,6 @@
 package com.banquito.client.model;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;

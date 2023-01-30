@@ -29,7 +29,8 @@ import com.banquito.client.service.ClientService;
 
 @RestController
 @RequestMapping("/api/client")
-@CrossOrigin(origins = "*", methods = { org.springframework.web.bind.annotation.RequestMethod.GET,
+@CrossOrigin(origins = "*", methods = { 
+    org.springframework.web.bind.annotation.RequestMethod.GET,
     org.springframework.web.bind.annotation.RequestMethod.POST,
     org.springframework.web.bind.annotation.RequestMethod.PUT,
     org.springframework.web.bind.annotation.RequestMethod.DELETE })
@@ -41,12 +42,22 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping(value = "/{idCliente}/{typeIdentification}")
+    @GetMapping(value = "/{idCliente}/{identificationType}")
     public ResponseEntity<ClientRS> getClientById(@PathVariable("idCliente") String id,
-                                                    @PathVariable("typeIdentification") String typeIdentification) {
-        Client client = this.clientService.findClientByTypeIdAndID(typeIdentification, id);
+                                                    @PathVariable("identificationType") String identificationType) {
+        Client client = this.clientService.findClientByTypeIdAndID(identificationType, id);
         if (client != null) {
             return ResponseEntity.ok(ClientMapper.toClientRS(client));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "atm/{idCliente}")
+    public ResponseEntity<Client> getClientById(@PathVariable("idCliente") String id) {
+        Client client = this.clientService.findClientById(id);
+        if (client != null) {
+            return ResponseEntity.ok(client);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -72,10 +83,10 @@ public class ClientController {
         }
     }
 
-    @GetMapping(value = "signature/{typeIdentification}/{identification}")
-    public ResponseEntity<SignatureRQ> getSignature(@PathVariable("typeIdentification") String typeIdentification,
+    @GetMapping(value = "signature/{identificationType}/{identification}")
+    public ResponseEntity<SignatureRQ> getSignature(@PathVariable("identificationType") String identificationType,
                                                     @PathVariable("identification") String identification){
-        Client client = this.clientService.findClientByTypeIdAndID(typeIdentification,identification);
+        Client client = this.clientService.findClientByTypeIdAndID(identificationType,identification);
         if (client != null){
             return ResponseEntity.ok(ClientMapper.toSignature(client));
         } else {

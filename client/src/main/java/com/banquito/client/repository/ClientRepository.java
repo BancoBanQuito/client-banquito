@@ -20,7 +20,7 @@ public interface ClientRepository extends CrudRepository<Client, String> {
 
     Boolean existsByIdentification(String identification);
 
-    Boolean existsByIdentificationTypeAndIdentification(String typeIdentification, String identification);
+    Boolean existsByIdentificationTypeAndIdentification(String identificationType, String identification);
 
     Client findByEmail(String email);
 
