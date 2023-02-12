@@ -41,4 +41,4 @@ jobs:
         script: |
           docker stop client-banquito || true
           docker rm client-banquito || true
-          docker run --rm -d --name banquito -p 80:9000 ${{ secrets.DOCKERHUB_USERNAME }}/client-banquito:${{ github.sha }}
+          docker run --rm -d --name client-banquito -p 80:9000 ${{ secrets.DOCKERHUB_USERNAME }}/client-banquito:${{ github.sha }}
