@@ -3,7 +3,7 @@ name: Build and Test Spring Boot Project
 on:
   push:
     branches:
-      - CD-test
+      - main
 
 jobs:
   build:
@@ -39,6 +39,6 @@ jobs:
         username: ec2-user
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          docker stop banquito || true
-          docker rm banquito || true
-          docker run --rm -d --name banquito -p 80:8080 ${{ secrets.DOCKERHUB_USERNAME }}/client-banquito:${{ github.sha }}
+          docker stop client-banquito || true
+          docker rm client-banquito || true
+          docker run --rm -d --name banquito -p 80:9000 ${{ secrets.DOCKERHUB_USERNAME }}/client-banquito:${{ github.sha }}
