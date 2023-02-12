@@ -19,9 +19,12 @@ jobs:
         distribution: 'temurin'
         java-version: 17
         cache: 'maven'
-
+    
     - name: Build with Maven
       run: mvn clean install --file client/pom.xml
 
-    - name: Test with Maven
-      run: ls -l client/target
+    - name: Build jar with Maven
+      run: mvn package
+
+    - name: Create docker image
+      run: docker build -t client-banquito .

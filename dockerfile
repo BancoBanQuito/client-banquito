@@ -1,4 +1,4 @@
 FROM eclipse-temurin:17-jdk-focal
 
-COPY target/client-0.1.jar client-0.1.jar
-ENTRYPOINT ["java","-jar","/agencias-ud-0.1.jar"]
+COPY client/target/client-0.0.1-SNAPSHOT.jar client-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/client-0.0.1-SNAPSHOT.jar"]
