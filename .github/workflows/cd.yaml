@@ -39,6 +39,6 @@ jobs:
         username: ec2-user
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          # docker stop banquito || true
-          # docker rm banquito || true
-          docker run --rm --name banquito -p 80:8080 ${{ secrets.DOCKERHUB_USERNAME }}/client-banquito:${{ github.sha }}
+          docker stop banquito || true
+          docker rm banquito || true
+          docker run --rm -d --name banquito -p 80:8080 ${{ secrets.DOCKERHUB_USERNAME }}/client-banquito:${{ github.sha }}
