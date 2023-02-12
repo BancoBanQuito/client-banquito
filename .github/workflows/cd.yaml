@@ -31,3 +31,12 @@ jobs:
 
     - name: Push Docker Image
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/client-banquito:${{ github.sha }}
+
+    - name: Connect to EC2 instance using SSH recipe
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          uname -a
