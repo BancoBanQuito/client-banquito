@@ -24,7 +24,7 @@ jobs:
       run: mvn clean install --file client/pom.xml
 
     - name: Build jar with Maven
-      run: mvn package
+      run: mvn package --file client/pom.xml
 
     - name: Create docker image
       run: docker build -t client-banquito .
