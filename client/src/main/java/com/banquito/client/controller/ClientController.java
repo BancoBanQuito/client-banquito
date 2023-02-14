@@ -199,6 +199,7 @@ public class ClientController {
         }
     }
 
+    
     @PutMapping(value = "/personal-data")
     public ResponseEntity<String> updatePersonalDataClient(@RequestBody PersonalClientDataRSRQ clientRQ) {
         try {
