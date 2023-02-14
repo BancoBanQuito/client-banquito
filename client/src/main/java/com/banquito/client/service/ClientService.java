@@ -98,7 +98,7 @@ public class ClientService {
     @Transactional
     public void updateClient(String id, Client client) {
         Boolean clientExists = this.clientRepository.existsByIdentification(id);
-        if (clientExists) {
+        if (!clientExists) {
             throw new RuntimeException("Client not found");
         }
         Client clientToUpdate = this.clientRepository.findByIdentification(id);
