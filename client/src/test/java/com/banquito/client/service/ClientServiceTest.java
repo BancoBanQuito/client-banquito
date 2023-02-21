@@ -35,7 +35,7 @@ public class ClientServiceTest {
 	}
 
     @Test
-	public void testCreateClientWithAnExistingIdentification() {
+	public void testCreateClient_ExistingClient() {
         NewClientMock clientMock = new NewClientMock();
         Client newClient = clientMock.mockClient();
         when(clientServiceMock.createClient(newClient)).thenReturn(newClient);
@@ -51,7 +51,7 @@ public class ClientServiceTest {
 	}
 
     @Test
-	public void testCreateClientWithIlegalClient() {
+	public void testCreateClient_IlegalClient() {
 		NewClientMock clientMock = new NewClientMock();
         Client newIlegalClient = clientMock.mockIlegalClient();
 
@@ -64,4 +64,62 @@ public class ClientServiceTest {
         assertEquals("The date of birth cannot be greater than the current date" + newIlegalClient.getBirthDate(), exception.getMessage());
 	}
 
+    @Test
+    public void testFindClientById() {
+        NewClientMock clientMock = new NewClientMock();
+		Client testClient = clientMock.mockClient();
+
+        when(clientRepositoryMock.existsByIdentification(testClient.getIdentification())).thenReturn(true);
+        when(clientRepositoryMock.findByIdentification(testClient.getIdentification())).thenReturn(testClient);
+
+        Client result = clientServiceMock.findClientById(testClient.getIdentification());
+
+        assertEquals(testClient.getIdentification(), result.getIdentification());
+    }
+
+    @Test
+    public void testFindClientById_ClientDoesNotExist() {
+        NewClientMock clientMock = new NewClientMock();
+		Client testClient = clientMock.mockClient();
+
+        when(clientRepositoryMock.existsByIdentification(testClient.getIdentification())).thenReturn(false);
+
+        Throwable exception = assertThrows(RuntimeException.class, () -> {
+            clientServiceMock.findClientById(testClient.getIdentification());
+        });
+
+        assertEquals("The client does not exist", exception.getMessage());
+    }
+
+
+    @Test
+    public void testFindClientByTypeIdAndID() {
+        NewClientMock clientMock = new NewClientMock();
+		Client testClient = clientMock.mockClient();
+
+        when(clientRepositoryMock.existsByIdentification(testClient.getIdentification())).thenReturn(true);
+        when(clientRepositoryMock.findByIdentificationTypeAndIdentification(
+            testClient.getIdentificationType(), testClient.getIdentification())).thenReturn(testClient);
+
+        Client result = clientServiceMock.findClientByTypeIdAndID(
+            testClient.getIdentificationType(), testClient.getIdentification());
+
+        assertEquals(testClient.getIdentification(), result.getIdentification());
+        assertEquals(testClient.getIdentificationType(), result.getIdentificationType());
+    }
+
+    @Test
+    public void testFindClientByTypeIdAndID_ClientDoesNotExist() {
+        NewClientMock clientMock = new NewClientMock();
+		Client testClient = clientMock.mockClient();
+
+        when(clientRepositoryMock.existsByIdentification(testClient.getIdentification())).thenReturn(false);
+
+        Throwable exception = assertThrows(RuntimeException.class, () -> {
+            clientServiceMock.findClientByTypeIdAndID(
+                testClient.getIdentificationType(), testClient.getIdentification());
+        });
+
+        assertEquals("The client does not exist", exception.getMessage());
+    }
 }
