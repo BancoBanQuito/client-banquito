@@ -46,7 +46,7 @@ public class ClientService {
     }
 
     @Transactional
-    public void createClient(Client client) {
+    public Client createClient(Client client) {
         Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
         
         if (clientExists) {
@@ -61,7 +61,7 @@ public class ClientService {
         client.setFullname(client.getLastname() + " " + client.getFirstname());
         client.setStatus("INA");
         client.setCreationDate(new Date());
-        this.clientRepository.save(client);
+        return this.clientRepository.save(client);
     }
 
     @Transactional
