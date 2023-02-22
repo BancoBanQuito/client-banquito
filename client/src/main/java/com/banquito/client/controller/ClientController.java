@@ -161,31 +161,22 @@ public class ClientController {
     }
 
     @PostMapping(value = "/signup")
-    public ResponseEntity<String> singUp(@RequestBody UserRQ newUser) {
-        try {
-            boolean success = clientService.singUp(ClientMapper.userToClient(newUser));
-            if (success) {
-                return ResponseEntity.ok("User added successfully");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            System.out.print(e);
-            return ResponseEntity.status(400).body(e.getMessage());
+    public ResponseEntity<UserRQ> singUp(@RequestBody UserRQ newUser) {
+        Client client = clientService.singUp(ClientMapper.userToClient(newUser));
+        if (client != null){
+            return ResponseEntity.ok(ClientMapper.toUser(client));
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping(value = "/login")
-    public Object login(@RequestBody UserLogin user) {
-        try {
-            boolean success = clientService.login(user);
-            if (success) {
-                return ResponseEntity.status(200).body("Client logged");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+    public ResponseEntity<UserRQ> login(@RequestBody UserLogin user) {
+        Client client = clientService.login(user);
+        if (client != null){
+            return ResponseEntity.ok(ClientMapper.toUser(client));
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
