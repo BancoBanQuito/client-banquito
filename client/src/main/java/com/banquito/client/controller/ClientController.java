@@ -97,7 +97,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<String> createClient(@RequestBody NewClientRQ clientRQ) {
         try {
-            this.clientService.createClient(ClientMapper.toNewClient(clientRQ));
+            Client savedClient = this.clientService.createClient(ClientMapper.toNewClient(clientRQ));
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             System.out.println(e);
