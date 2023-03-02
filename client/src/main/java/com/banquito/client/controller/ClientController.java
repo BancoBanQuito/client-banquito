@@ -201,7 +201,7 @@ public class ClientController {
         }
     }
 
-    @GetMapping("/health")
+    @GetMapping(value = "/health")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("OK");
     }
