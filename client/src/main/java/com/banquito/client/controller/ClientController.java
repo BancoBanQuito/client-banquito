@@ -200,4 +200,9 @@ public class ClientController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
 }
