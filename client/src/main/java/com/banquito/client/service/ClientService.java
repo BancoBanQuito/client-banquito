@@ -46,7 +46,7 @@ public class ClientService {
     }
 
     @Transactional
-    public void createClient(Client client) {
+    public Client createClient(Client client) {
         Boolean clientExists = this.clientRepository.existsByIdentification(client.getIdentification());
         
         if (clientExists) {
@@ -61,7 +61,7 @@ public class ClientService {
         client.setFullname(client.getLastname() + " " + client.getFirstname());
         client.setStatus("INA");
         client.setCreationDate(new Date());
-        this.clientRepository.save(client);
+        return this.clientRepository.save(client);
     }
 
     @Transactional
@@ -131,7 +131,14 @@ public class ClientService {
 
     @Transactional
     public List<Client> findClientBySimilarLastname(String lastname) {
-        return this.clientRepository.findByLastnameLikeOrderByLastname(lastname);
+        List<Client> clients = this.clientRepository.findByLastnameLikeOrderByLastname(lastname);
+        if (clients == null) {
+            throw new RuntimeException("The client does not exist");
+        }
+        if (clients.isEmpty()) {
+            throw new RuntimeException("The client does not exist");
+        }
+        return clients;
     }
 
     @Transactional
@@ -217,26 +224,22 @@ public class ClientService {
         return age.getYears() > 18;
     }
 
-    public boolean login(UserLogin user){
+    public Client login(UserLogin user){
         Client registeredClient = this.clientRepository.findByEmail(user.getUserName());
-        System.out.println(registeredClient);
-        if(
-            registeredClient.getUser().getUserName().equals(user.getUserName())
-            && registeredClient.getUser().getPassword().equals(user.getPassword())){
-            return true;
+        if(registeredClient.getUser().getPassword().equals(user.getPassword())){
+            return registeredClient;
         }
-        return false;
+        return registeredClient;
     }
 
-    public boolean singUp(Client client){
+    public Client singUp(Client client){
         Client registeredClient = this.clientRepository.findByIdentificationTypeAndIdentification(client.getIdentificationType(), client.getIdentification());
         if(registeredClient != null && registeredClient.getUser() == null
         ){
             registeredClient.setUser(client.getUser());
-            this.clientRepository.save(registeredClient);
-            return true;
+            return this.clientRepository.save(registeredClient);
         }
-        return false;
+        return null;
     }
 
 }

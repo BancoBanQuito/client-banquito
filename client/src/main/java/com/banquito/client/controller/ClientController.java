@@ -97,7 +97,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<String> createClient(@RequestBody NewClientRQ clientRQ) {
         try {
-            this.clientService.createClient(ClientMapper.toNewClient(clientRQ));
+            Client savedClient = this.clientService.createClient(ClientMapper.toNewClient(clientRQ));
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             System.out.println(e);
@@ -161,31 +161,22 @@ public class ClientController {
     }
 
     @PostMapping(value = "/signup")
-    public ResponseEntity<String> singUp(@RequestBody UserRQ newUser) {
-        try {
-            boolean success = clientService.singUp(ClientMapper.userToClient(newUser));
-            if (success) {
-                return ResponseEntity.ok("User added successfully");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            System.out.print(e);
-            return ResponseEntity.status(400).body(e.getMessage());
+    public ResponseEntity<UserRQ> singUp(@RequestBody UserRQ newUser) {
+        Client client = clientService.singUp(ClientMapper.userToClient(newUser));
+        if (client != null){
+            return ResponseEntity.ok(ClientMapper.toUser(client));
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping(value = "/login")
-    public Object login(@RequestBody UserLogin user) {
-        try {
-            boolean success = clientService.login(user);
-            if (success) {
-                return ResponseEntity.status(200).body("Client logged");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+    public ResponseEntity<UserRQ> login(@RequestBody UserLogin user) {
+        Client client = clientService.login(user);
+        if (client != null){
+            return ResponseEntity.ok(ClientMapper.toUser(client));
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -199,6 +190,7 @@ public class ClientController {
         }
     }
 
+    
     @PutMapping(value = "/personal-data")
     public ResponseEntity<String> updatePersonalDataClient(@RequestBody PersonalClientDataRSRQ clientRQ) {
         try {
@@ -207,5 +199,10 @@ public class ClientController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
     }
 }
